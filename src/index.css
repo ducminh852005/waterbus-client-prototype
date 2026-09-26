@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #001520;
+  --color-primary-container: #082b3a;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #7493a5;
+  --color-primary-fixed: #c7e7fb;
+  --color-primary-fixed-dim: #accbde;
+  --color-secondary: #006a65;
+  --color-secondary-container: #9deee7;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #0c6e69;
+  --color-secondary-fixed: #a0f1ea;
+  --color-secondary-fixed-dim: #84d5ce;
+  --color-tertiary: #290900;
+  --color-tertiary-container: #4b1700;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #e26d38;
+  --color-tertiary-fixed: #ffdbce;
+  --color-tertiary-fixed-dim: #ffb598;
+  --color-surface: #f0fbff;
+  --color-surface-dim: #d0dce0;
+  --color-surface-bright: #f0fbff;
+  --color-surface-variant: #d8e5e8;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eaf6fa;
+  --color-surface-container: #e4f0f4;
+  --color-surface-container-high: #deeaee;
+  --color-surface-container-highest: #d8e5e8;
+  --color-on-surface: #121d20;
+  --color-on-surface-variant: #42474b;
+  --color-outline: #72787c;
+  --color-outline-variant: #c2c7cc;
+  --color-background: #f0fbff;
+  --color-on-background: #121d20;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+
+  --font-display-lg: "Playfair Display", serif;
+  --font-headline-lg: "Playfair Display", serif;
+  --font-headline-md: "Playfair Display", serif;
+  --font-headline-sm: "Playfair Display", serif;
+  --font-title-md: "Be Vietnam Pro", sans-serif;
+  --font-body-lg: "Be Vietnam Pro", sans-serif;
+  --font-body-md: "Be Vietnam Pro", sans-serif;
+  --font-label-md: "Be Vietnam Pro", sans-serif;
+  --font-label-sm: "Be Vietnam Pro", sans-serif;
+
+  --spacing-space-lg: 2rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-margin-mobile: 1.25rem;
+  --spacing-gutter-mobile: 1rem;
+  --spacing-space-md: 1rem;
+  --spacing-margin: 4rem;
+  --spacing-space-xl: 3.5rem;
+  --spacing-margin-tablet: 2rem;
+  --spacing-space-xs: 0.25rem;
+
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 26px;
+  --text-body-lg--font-weight: 400;
+
+  --text-label-sm: 11px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--letter-spacing: 0.08em;
+  --text-label-sm--font-weight: 500;
+
+  --text-headline-sm: 22px;
+  --text-headline-sm--line-height: 30px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-display-lg: 56px;
+  --text-display-lg--line-height: 64px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 400;
+
+  --text-headline-lg-mobile: 28px;
+  --text-headline-lg-mobile--line-height: 36px;
+  --text-headline-lg-mobile--font-weight: 400;
+
+  --text-headline-md: 28px;
+  --text-headline-md--line-height: 36px;
+  --text-headline-md--font-weight: 500;
+
+  --text-body-md: 14px;
+  --text-body-md--line-height: 22px;
+  --text-body-md--font-weight: 400;
+
+  --text-title-md: 18px;
+  --text-title-md--line-height: 26px;
+  --text-title-md--letter-spacing: -0.005em;
+  --text-title-md--font-weight: 600;
+
+  --text-headline-lg: 40px;
+  --text-headline-lg--line-height: 48px;
+  --text-headline-lg--letter-spacing: -0.01em;
+  --text-headline-lg--font-weight: 400;
+
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--letter-spacing: 0.06em;
+  --text-label-md--font-weight: 600;
+
+  --text-display-lg-mobile: 36px;
+  --text-display-lg-mobile--line-height: 44px;
+  --text-display-lg-mobile--letter-spacing: -0.01em;
+  --text-display-lg-mobile--font-weight: 400;
+
+}
+
+@layer base {
+  html,body { margin:0; padding:0; }
+  body { overscroll-behavior: none; }
+  main > :first-child { margin-top: 0 !important; }
+  main > :last-child { margin-bottom: 0 !important; }
+}
+::-webkit-scrollbar { display: none; }

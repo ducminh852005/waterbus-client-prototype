@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a0f1ea"/>
+      <stop offset="100%" stop-color="#006a65"/>
+    </linearGradient>
+    <linearGradient id="boatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb598"/>
+      <stop offset="100%" stop-color="#e26d38"/>
+    </linearGradient>
+  </defs>
+  <!-- Sleek modern catamaran / river boat hull -->
+  <path d="M12 36C18 36 28 35 44 26C48 24 53 23 56 23C53 27 46 32 38 35C28 39 18 39 12 36Z" fill="url(#boatGrad)"/>
+  <!-- Upper deck / cabin streamlined silhouette -->
+  <path d="M22 28C28 25 36 23 42 22C41 24 37 26 31 28C26 29 23 29 22 28Z" fill="#ffffff" opacity="0.9"/>
+  <!-- River waves below -->
+  <path d="M8 43C16 41 24 45 32 43C40 41 48 45 56 43C53 45 45 47 38 46C30 45 22 47 14 47C10 47 8 45 8 43Z" fill="url(#waveGrad)"/>
+  <path d="M14 50C20 49 26 52 34 50C42 48 48 51 54 50C50 52 44 54 36 53C28 52 22 54 16 54C14 54 13 52 14 50Z" fill="#006a65" opacity="0.6"/>
+  <!-- Dynamic bow accent dot -->
+  <circle cx="50" cy="20" r="3" fill="#ffb598"/>
+</svg>
