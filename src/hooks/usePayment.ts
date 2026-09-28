@@ -9,7 +9,8 @@ import { useCountdown } from './useCountdown';
 export function usePayment() {
   const navigate = useNavigate();
   const { bookingData, updateBooking } = useBooking();
-  const { selectedTrip, selectedReturnTrip, selectedSeats, selectedReturnSeats, passengerInfo } = bookingData;
+  const { selectedTrip, selectedReturnTrip, selectedSeats, selectedReturnSeats, passengerInfo } =
+    bookingData;
 
   const [method, setMethod] = useState<PaymentMethodId>('vnpay');
   const [voucherCode, setVoucherCode] = useState('');
@@ -25,10 +26,13 @@ export function usePayment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTrip, selectedSeats.length, passengerInfo]);
 
-  const subtotal = useMemo(() => computeSubtotal([...selectedSeats, ...(selectedReturnSeats || [])]), [selectedSeats, selectedReturnSeats]);
+  const subtotal = useMemo(
+    () => computeSubtotal([...selectedSeats, ...(selectedReturnSeats || [])]),
+    [selectedSeats, selectedReturnSeats]
+  );
   const priceBreakdown = useMemo(
     () => applyVoucherToSubtotal(subtotal, appliedVoucher),
-    [subtotal, appliedVoucher],
+    [subtotal, appliedVoucher]
   );
 
   const applyVoucherCode = async () => {
@@ -62,7 +66,11 @@ export function usePayment() {
         paymentMethod: method,
         priceBreakdown,
       });
-      updateBooking({ bookingConfirmation: confirmation, paymentMethod: method, voucher: appliedVoucher });
+      updateBooking({
+        bookingConfirmation: confirmation,
+        paymentMethod: method,
+        voucher: appliedVoucher,
+      });
       navigate('/success');
     } finally {
       setSubmitting(false);

@@ -1,0 +1,44 @@
+```mermaid
+erDiagram
+    BOOKINGS {
+        bigint booking_id PK
+        uuid user_id REF
+        string booking_code
+        string customer_phone
+        decimal final_amount
+        string status
+        timestamp expires_at
+    }
+    TICKETS {
+        bigint ticket_id PK
+        bigint booking_id FK
+        bigint reservation_id REF
+        bigint trip_instance_id REF
+        string seat_number
+        string qr_token_hash "UNIQUE"
+        string status "VALID, USED, CANCELLED"
+    }
+    TICKET_SCAN_EVENTS {
+        uuid scan_id PK
+        bigint ticket_id FK
+        uuid staff_id REF
+        string result "SUCCESS, INVALID"
+        timestamp scanned_at
+    }
+    VOUCHERS {
+        bigint voucher_id PK
+        string code
+        decimal voucher_value
+    }
+    USER_VOUCHERS {
+        bigint user_voucher_id PK
+        uuid user_id REF
+        bigint voucher_id FK
+        string status "AVAILABLE, USED"
+    }
+
+    BOOKINGS ||--o{ TICKETS : "contains"
+    TICKETS ||--o{ TICKET_SCAN_EVENTS : "history"
+    VOUCHERS ||--o{ USER_VOUCHERS : "issued to"
+    USER_VOUCHERS ||--o| BOOKINGS : "applied to"
+```

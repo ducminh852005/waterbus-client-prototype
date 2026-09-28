@@ -10,7 +10,7 @@ export function applyVoucher(subtotal: number, voucher: Voucher | null): PriceBr
   }
   const discount = voucher.discountPercent
     ? Math.round((subtotal * voucher.discountPercent) / 100)
-    : voucher.discountAmount ?? 0;
+    : (voucher.discountAmount ?? 0);
   return {
     subtotal,
     voucherDiscount: discount,

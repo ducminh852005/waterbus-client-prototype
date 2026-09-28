@@ -6,23 +6,29 @@ type PaymentMethodOptionProps = {
   onSelect: () => void;
 };
 
-export default function PaymentMethodOption({ method, selected, onSelect }: PaymentMethodOptionProps) {
+export default function PaymentMethodOption({
+  method,
+  selected,
+  onSelect,
+}: PaymentMethodOptionProps) {
   return (
-    <label className="group relative flex items-start p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all cursor-pointer has-[:checked]:bg-secondary-fixed/20">
+    <label className="group p-space-md bg-surface-container-lowest has-[:checked]:bg-secondary-fixed/20 relative flex cursor-pointer items-start rounded-xl shadow-sm transition-all hover:shadow-md">
       <input
         checked={selected}
         onChange={onSelect}
-        className="mt-1 w-4 h-4 accent-[#006a65] cursor-pointer"
+        className="mt-1 h-4 w-4 cursor-pointer accent-[#006a65]"
         name="payment_method"
         type="radio"
         value={method.id}
       />
       <div className="ml-space-md flex-1">
-        <div className="flex items-center justify-between gap-space-xs flex-wrap">
-          <div className="flex items-center gap-space-xs">
-            <span className="font-title-md text-title-md text-on-surface group-hover:text-secondary transition-colors">{method.name}</span>
+        <div className="gap-space-xs flex flex-wrap items-center justify-between">
+          <div className="gap-space-xs flex items-center">
+            <span className="font-title-md text-title-md text-on-surface group-hover:text-secondary transition-colors">
+              {method.name}
+            </span>
             {method.badge && (
-              <span className="bg-on-tertiary-container text-on-primary font-label-sm text-label-sm px-space-xs py-0.5 rounded-full uppercase tracking-wider">
+              <span className="bg-on-tertiary-container text-on-primary font-label-sm text-label-sm px-space-xs rounded-full py-0.5 tracking-wider uppercase">
                 {method.badge}
               </span>
             )}
@@ -30,14 +36,19 @@ export default function PaymentMethodOption({ method, selected, onSelect }: Paym
           {method.tags && method.tags.length > 0 && (
             <div className="flex items-center gap-1.5">
               {method.tags.map((tag) => (
-                <span key={tag} className="font-label-sm text-label-sm text-outline-variant bg-surface-container px-2 py-0.5 rounded font-semibold">
+                <span
+                  key={tag}
+                  className="font-label-sm text-label-sm text-outline-variant bg-surface-container rounded px-2 py-0.5 font-semibold"
+                >
                   {tag}
                 </span>
               ))}
             </div>
           )}
         </div>
-        <p className="font-body-md text-body-md text-on-surface-variant mt-1">{method.description}</p>
+        <p className="font-body-md text-body-md text-on-surface-variant mt-1">
+          {method.description}
+        </p>
       </div>
     </label>
   );

@@ -5,8 +5,9 @@ export type TripStatus = 'available' | 'low' | 'soldout';
 export type TripTag = 'recommended' | 'scenic';
 
 export interface Trip {
-  id: string;
+  id: number;
   code: string;
+  routeId?: number;
   from: StationCode;
   to: StationCode;
   date: string;

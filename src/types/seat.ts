@@ -1,11 +1,15 @@
 export type SeatCategory = 'vip' | 'standard' | 'deck';
-export type SeatStatus = 'available' | 'booked' | 'priority';
+export type SeatStatus = 'AVAILABLE' | 'HOLDING' | 'BOOKED';
 
 export interface Seat {
-  id: string;
+  id: number;
+  reservationId?: number;
+  seatNumber: string;
   category: SeatCategory;
+  deck: string;
   price: number;
   status: SeatStatus;
+  holdToken?: string;
 }
 
 export interface SeatMapSection {
@@ -15,6 +19,6 @@ export interface SeatMapSection {
 }
 
 export interface SeatMap {
-  tripId: string;
+  tripId: number;
   sections: SeatMapSection[];
 }

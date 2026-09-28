@@ -28,19 +28,32 @@ export function useBookingSearch() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     updateBooking({
-      searchParams: { from, to, date, returnDate: tripType === 'round-trip' ? returnDate : undefined, passengers, tripType },
+      searchParams: {
+        from,
+        to,
+        date,
+        returnDate: tripType === 'round-trip' ? returnDate : undefined,
+        passengers,
+        tripType,
+      },
     });
     navigate('/trips');
   };
 
   return {
     stations,
-    from, setFrom,
-    to, setTo,
-    date, setDate,
-    returnDate, setReturnDate,
-    passengers, setPassengers,
-    tripType, setTripType,
+    from,
+    setFrom,
+    to,
+    setTo,
+    date,
+    setDate,
+    returnDate,
+    setReturnDate,
+    passengers,
+    setPassengers,
+    tripType,
+    setTripType,
     swapStations,
     handleSearch,
   };

@@ -7,7 +7,12 @@ const PRICE_BY_CATEGORY: Record<SeatCategory, number> = {
   deck: 15000,
 };
 
-function makeSeat(id: string, category: SeatCategory, rng: () => number, forcedStatus?: Seat['status']): Seat {
+function makeSeat(
+  id: string,
+  category: SeatCategory,
+  rng: () => number,
+  forcedStatus?: Seat['status']
+): Seat {
   let status: Seat['status'] = forcedStatus ?? 'available';
   if (!forcedStatus) {
     const roll = rng();

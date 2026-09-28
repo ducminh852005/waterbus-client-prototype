@@ -15,9 +15,9 @@ type DateStripProps = {
 
 export default function DateStrip({ dates, selectedDate, onSelect }: DateStripProps) {
   return (
-    <div className="w-full bg-surface py-space-sm">
-      <div className="max-w-7xl mx-auto px-gutter">
-        <div className="flex items-center justify-between gap-space-xs overflow-x-auto pt-3 pb-1 no-scrollbar">
+    <div className="bg-surface py-space-sm w-full">
+      <div className="px-gutter mx-auto max-w-7xl">
+        <div className="gap-space-xs no-scrollbar flex items-center justify-between overflow-x-auto pt-3 pb-1">
           {dates.map((item) => {
             const isSelected = item.date === selectedDate;
             return (
@@ -27,19 +27,19 @@ export default function DateStrip({ dates, selectedDate, onSelect }: DateStripPr
                 onClick={() => onSelect(item.date)}
                 className={
                   isSelected
-                    ? 'flex-1 min-w-[115px] p-2.5 rounded-lg bg-primary text-on-primary text-center cursor-pointer shadow-md relative'
-                    : 'flex-1 min-w-[105px] p-2.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-center cursor-pointer transition-colors shadow-sm'
+                    ? 'bg-primary text-on-primary relative min-w-[115px] flex-1 cursor-pointer rounded-lg p-2.5 text-center shadow-md'
+                    : 'bg-surface-container-lowest hover:bg-surface-container min-w-[105px] flex-1 cursor-pointer rounded-lg p-2.5 text-center shadow-sm transition-colors'
                 }
               >
                 {isSelected && (
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.2 bg-on-tertiary-container text-on-tertiary rounded-full font-label-sm text-[9px] tracking-wider uppercase">
+                  <div className="py-0.2 bg-on-tertiary-container text-on-tertiary font-label-sm absolute -top-2 left-1/2 -translate-x-1/2 rounded-full px-2 text-[9px] tracking-wider uppercase">
                     Đang chọn
                   </div>
                 )}
                 <p
                   className={
                     isSelected
-                      ? 'font-label-sm text-label-sm text-secondary-fixed uppercase font-medium'
+                      ? 'font-label-sm text-label-sm text-secondary-fixed font-medium uppercase'
                       : 'font-label-sm text-label-sm text-on-surface-variant uppercase'
                   }
                 >
@@ -57,8 +57,8 @@ export default function DateStrip({ dates, selectedDate, onSelect }: DateStripPr
                 <p
                   className={
                     isSelected
-                      ? 'font-label-sm text-label-sm text-secondary-container font-semibold mt-0.5'
-                      : 'font-label-sm text-label-sm text-secondary font-medium mt-0.5'
+                      ? 'font-label-sm text-label-sm text-secondary-container mt-0.5 font-semibold'
+                      : 'font-label-sm text-label-sm text-secondary mt-0.5 font-medium'
                   }
                 >
                   từ {formatVnd(item.minPrice)}

@@ -1,0 +1,43 @@
+```mermaid
+erDiagram
+    STATIONS {
+        int station_id PK
+        string name
+        string code
+        decimal latitude
+        decimal longitude
+    }
+    ROUTES {
+        int route_id PK
+        int departure_station_id FK
+        int arrival_station_id FK
+        decimal distance_km
+    }
+    ROUTE_STOPS {
+        int route_stop_id PK
+        int route_id FK
+        int station_id FK
+        int stop_order
+    }
+    ROUTE_LANDMARKS {
+        int landmark_id PK
+        int route_id FK
+        string name
+        decimal latitude
+        decimal longitude
+        int trigger_radius_meters
+        string audio_url "MP3 File"
+    }
+    FARE_RULES {
+        int fare_rule_id PK
+        int route_id FK
+        decimal base_price
+        string fare_category "ADULT, CHILD"
+    }
+
+    STATIONS ||--o{ ROUTES : "from/to"
+    ROUTES ||--o{ ROUTE_STOPS : "has stops"
+    STATIONS ||--o{ ROUTE_STOPS : "is stop"
+    ROUTES ||--o{ ROUTE_LANDMARKS : "audio guide"
+    ROUTES ||--o{ FARE_RULES : "pricing"
+```

@@ -1,0 +1,316 @@
+erDiagram
+    %% ==========================================
+    %% 1. IDENTITY & ACCESS MANAGEMENT (IAM)
+    %% ==========================================
+    ROLES {
+        INT role_id PK "Mã vai trò"
+        VARCHAR(50) role_name "CUSTOMER, STAFF, ADMIN"
+        VARCHAR(255) description "Mô tả quyền hạn"
+    }
+    
+    USERS {
+        UUID user_id PK "Khóa định danh"
+        INT role_id FK "Thuộc vai trò"
+        VARCHAR(100) full_name "Họ và tên"
+        VARCHAR(100) email "Email duy nhất (UNIQUE)"
+        VARCHAR(20) phone "SĐT (UNIQUE)"
+        VARCHAR(255) password_hash "Mật khẩu BCrypt"
+        BOOLEAN is_verified "Xác thực OTP"
+        VARCHAR(10) verification_code "Mã OTP"
+        TIMESTAMP created_at "Ngày tạo"
+    }
+
+    ROLES ||--o{ USERS : "has"
+
+    %% ==========================================
+    %% 2. BOOKING SERVICE
+    %% ==========================================
+    BOOKINGS {
+        BIGINT booking_id PK "Mã đơn đặt vé"
+        VARCHAR(50) booking_code "Mã tra cứu (UNIQUE)"
+        UUID user_id FK "Khách đặt (Nullable)"
+        VARCHAR(20) customer_phone "SĐT nhận vé"
+        VARCHAR(100) customer_name "Tên người nhận vé"
+        VARCHAR(20) booking_channel "ONLINE, COUNTER_POS"
+        UUID created_by_staff_id FK "Staff bán tại quầy"
+        BIGINT user_voucher_id FK "Áp dụng voucher"
+        DECIMAL(12,2) total_amount "Tiền vé gốc"
+        DECIMAL(12,2) final_amount "Tiền thực trả"
+        VARCHAR(20) status "PENDING, PAID, CANCELLED"
+        TIMESTAMP created_at "Ngày tạo"
+        TIMESTAMP expires_at "Hạn chót thanh toán"
+        TIMESTAMP confirmed_at "Thời điểm chốt đơn"
+        TIMESTAMP cancelled_at "Thời điểm hủy"
+        VARCHAR(255) cancel_reason "Lý do hủy"
+    }
+
+    TICKETS {
+        BIGINT ticket_id PK "Mã vé điện tử"
+        BIGINT booking_id FK "Thuộc đơn hàng"
+        BIGINT reservation_id FK "Khớp giữ chỗ"
+        BIGINT trip_instance_id FK "Thuộc chuyến chạy"
+        INT departure_station_id FK "Bến lên tàu"
+        INT arrival_station_id FK "Bến xuống tàu"
+        VARCHAR(10) seat_number "Số ghế (A01...)"
+        VARCHAR(100) passenger_name "Tên khách đi"
+        VARCHAR(255) qr_token_hash "Chữ ký QR"
+        INT qr_version "Phiên bản QR"
+        TIMESTAMP qr_issued_at "Ngày xuất QR"
+        TIMESTAMP qr_expires_at "Hạn QR"
+        VARCHAR(20) status "VALID, USED, CANCELLED"
+        UUID scanned_by_staff_id FK "Người quét vé"
+        UUID cancelled_by_staff_id FK "Người hủy vé"
+        TIMESTAMP scanned_at "Giờ check-in"
+    }
+
+    TICKET_SCAN_EVENTS {
+        UUID scan_id PK "Sự kiện quét vé"
+        BIGINT ticket_id FK "Vé được quét"
+        UUID staff_id FK "Staff thực hiện quét"
+        VARCHAR(20) result "SUCCESS, INVALID..."
+        VARCHAR(255) failure_reason "Lý do lỗi"
+        TIMESTAMP scanned_at "Giờ quét"
+        VARCHAR(100) device_id "Thiết bị quét"
+    }
+
+    USER_VOUCHERS {
+        BIGINT user_voucher_id PK "Khóa ví voucher"
+        UUID user_id FK "Thuộc user"
+        BIGINT voucher_id FK "Áp dụng mã"
+        VARCHAR(20) status "AVAILABLE, USED, EXPIRED"
+        TIMESTAMP assigned_at "Giờ lưu"
+        TIMESTAMP used_at "Giờ dùng"
+    }
+
+    VOUCHERS {
+        BIGINT voucher_id PK "Khóa voucher"
+        VARCHAR(50) code "Mã giảm giá (UNIQUE)"
+        VARCHAR(20) voucher_type "PERCENT, FIXED"
+        DECIMAL(12,2) voucher_value "Giá trị giảm"
+        DECIMAL(12,2) max_voucher_amount "Giảm tối đa"
+        DECIMAL(12,2) min_order_amount "Đơn tối thiểu"
+        TIMESTAMP valid_from "Bắt đầu"
+        TIMESTAMP expired_at "Hết hạn"
+        BIGINT used_booking_id "Đơn đã dùng (UNIQUE)"
+    }
+
+    USERS ||--o{ BOOKINGS : "places"
+    BOOKINGS ||--o{ TICKETS : "contains"
+    TICKETS ||--o{ TICKET_SCAN_EVENTS : "logs"
+    USERS ||--o{ TICKET_SCAN_EVENTS : "staff_scans"
+    USERS ||--o{ USER_VOUCHERS : "owns"
+    VOUCHERS ||--o{ USER_VOUCHERS : "creates"
+    USER_VOUCHERS |o--o| BOOKINGS : "applied_to"
+
+    %% ==========================================
+    %% 3. PAYMENT SERVICE
+    %% ==========================================
+    CUSTOMER_PAYMENT_METHODS {
+        BIGINT customer_payment_method_id PK "Khóa thẻ/ví"
+        UUID user_id FK "Thuộc user"
+        VARCHAR(50) payment_gateway "VNPAY, STRIPE..."
+        VARCHAR(30) method_type "CC, ATM, WALLET"
+        VARCHAR(255) gateway_token "Token an toàn"
+        VARCHAR(4) card_last_four "4 số cuối"
+        VARCHAR(150) card_holder_name "Tên in trên thẻ"
+        BOOLEAN is_default "Mặc định"
+    }
+
+    PAYMENT_TRANSACTIONS {
+        BIGINT payment_id PK "Mã giao dịch"
+        BIGINT booking_id FK "Thanh toán cho đơn"
+        BIGINT customer_payment_method_id FK "Sử dụng thẻ lưu"
+        VARCHAR(64) transaction_code "Mã tham chiếu (UQ)"
+        DECIMAL(12,2) amount "Số tiền"
+        VARCHAR(50) payment_gateway "Cổng thanh toán"
+        VARCHAR(50) payment_channel "Kênh thanh toán"
+        VARCHAR(128) gateway_transaction_id "Mã đối soát"
+        VARCHAR(20) payment_status "PENDING, SUCCESS"
+        TIMESTAMP paid_at "Giờ thanh toán"
+        VARCHAR(100) idempotency_key "Khóa chống trùng"
+    }
+
+    REFUND_TRANSACTIONS {
+        UUID refund_transaction_id PK "Khóa hoàn tiền"
+        BIGINT payment_id FK "Giao dịch gốc"
+        BIGINT booking_id FK "Đơn hàng gốc"
+        VARCHAR(64) refund_code "Mã hoàn (UQ)"
+        DECIMAL(12,2) refund_amount "Tiền hoàn"
+        DECIMAL(12,2) penalty_fee "Phí phạt hủy"
+        VARCHAR(30) refund_method "Hình thức hoàn"
+        JSONB bank_info_snapshot "Thông tin bank nhận"
+        VARCHAR(255) reason "Lý do hoàn"
+        VARCHAR(30) status "REQUESTED, SUCCESS"
+        UUID requested_by FK "Người yêu cầu"
+    }
+
+    USERS ||--o{ CUSTOMER_PAYMENT_METHODS : "saves"
+    BOOKINGS ||--o{ PAYMENT_TRANSACTIONS : "paid_via"
+    CUSTOMER_PAYMENT_METHODS ||--o{ PAYMENT_TRANSACTIONS : "used_in"
+    PAYMENT_TRANSACTIONS ||--o{ REFUND_TRANSACTIONS : "refunded_by"
+
+    %% ==========================================
+    %% 4. INVENTORY & REAL-TIME SEAT ENGINE
+    %% ==========================================
+    SEAT_RESERVATIONS {
+        BIGINT reservation_id PK "Khóa giữ chỗ"
+        BIGINT trip_instance_id FK "Chuyến chạy"
+        INT seat_id FK "Khớp ghế vật lý"
+        BIGINT booking_id FK "Đơn hàng (Nullable)"
+        VARCHAR(10) seat_number "Ký hiệu ghế"
+        VARCHAR(20) status "AVAILABLE, HOLDING, BOOKED"
+        TIMESTAMP lock_expires_at "Hạn khóa Redis TTL"
+        VARCHAR(64) hold_token "Token chống cướp ghế"
+    }
+
+    BOOKINGS ||--o{ SEAT_RESERVATIONS : "locks"
+    SEAT_RESERVATIONS |o--|| TICKETS : "converted_to"
+
+    %% ==========================================
+    %% 5. FLEET & SCHEDULE MANAGEMENT
+    %% ==========================================
+    SHIPS {
+        INT ship_id PK "Mã tàu"
+        VARCHAR(100) name "Tên tàu"
+        INT capacity "Sức chứa"
+        VARCHAR(50) ship_type "COMMUTER, TOURIST"
+        VARCHAR(20) status "Trạng thái"
+    }
+
+    SEATS {
+        INT seat_id PK "Mã ghế cố định"
+        INT ship_id FK "Thuộc tàu"
+        VARCHAR(10) seat_number "Số ghế (A01)"
+        VARCHAR(20) deck "Tầng (UPPER, LOWER)"
+        VARCHAR(20) seat_type "STANDARD, VIP"
+    }
+
+    SHIP_TELEMETRIES {
+        BIGINT telemetry_id PK "Log GPS"
+        INT ship_id FK "Tàu di chuyển"
+        DECIMAL(10,7) latitude "Vĩ độ"
+        DECIMAL(10,7) longitude "Kinh độ"
+        DECIMAL(5,2) speed_knots "Vận tốc"
+        DECIMAL(5,2) heading "Hướng mũi tàu"
+        TIMESTAMP recorded_at "Giờ cập nhật"
+    }
+
+    SCHEDULES {
+        INT schedule_id PK "Mã lịch trình"
+        INT route_id FK "Chạy tuyến nào"
+        INT ship_id FK "Tàu chạy mẫu"
+        TIME departure_time "Giờ đi"
+        TIME arrival_time "Giờ đến"
+        VARCHAR(20) schedule_type "Loại lịch"
+        BOOLEAN is_active "Trạng thái"
+    }
+
+    TRIP_INSTANCES {
+        BIGINT trip_instance_id PK "Mã chuyến thực"
+        INT schedule_id FK "Sinh từ lịch mẫu"
+        INT actual_ship_id FK "Tàu thực tế chạy"
+        DATE trip_date "Ngày chạy"
+        TIMESTAMP actual_departure "Giờ đi thực tế"
+        TIMESTAMP actual_arrival "Giờ đến thực tế"
+        VARCHAR(20) status "SCHEDULED, DONE"
+    }
+
+    SHIPS ||--o{ SEATS : "contains"
+    SHIPS ||--o{ SHIP_TELEMETRIES : "tracked_by"
+    SHIPS ||--o{ SCHEDULES : "assigned_to"
+    SCHEDULES ||--o{ TRIP_INSTANCES : "generates"
+    TRIP_INSTANCES ||--o{ SEAT_RESERVATIONS : "has_inventory"
+    SEATS ||--o{ SEAT_RESERVATIONS : "maps_to"
+
+    %% ==========================================
+    %% 6. CATALOG & ROUTE MANAGEMENT
+    %% ==========================================
+    STATIONS {
+        INT station_id PK "Mã bến"
+        VARCHAR(100) name "Tên bến"
+        VARCHAR(20) code "Mã code bến"
+        DECIMAL(10,7) latitude "Vĩ độ"
+        DECIMAL(10,7) longitude "Kinh độ"
+        VARCHAR(255) address "Địa chỉ"
+        BOOLEAN is_active "Đang khai thác"
+    }
+
+    ROUTES {
+        INT route_id PK "Mã tuyến"
+        INT departure_station_id FK "Bến xuất phát"
+        INT arrival_station_id FK "Bến đích"
+        VARCHAR(100) name "Tên tuyến"
+        DECIMAL(5,2) distance_km "Độ dài km"
+        INT estimated_minutes "Phút di chuyển"
+        BOOLEAN is_active "Trạng thái"
+    }
+
+    ROUTE_STOPS {
+        INT route_stop_id PK "Trạm dừng trung gian"
+        INT route_id FK "Thuộc tuyến"
+        INT station_id FK "Bến ghé lại"
+        INT stop_order "Thứ tự ghé"
+        INT transit_minutes "Phút chạy đến"
+    }
+
+    ROUTE_LANDMARKS {
+        INT landmark_id PK "Mã địa danh"
+        INT route_id FK "Nằm trên tuyến"
+        VARCHAR(100) name "Tên địa danh"
+        DECIMAL(10,7) latitude "Vĩ độ"
+        DECIMAL(10,7) longitude "Kinh độ"
+        INT trigger_radius_meters "Bán kính kích hoạt"
+        VARCHAR(255) audio_url "Link MP3"
+        TEXT description "Mô tả lịch sử"
+    }
+
+    FARE_RULES {
+        INT fare_rule_id PK "Mã quy tắc giá"
+        INT route_id FK "Áp dụng tuyến"
+        DECIMAL(12,2) base_price "Giá cơ sở"
+        VARCHAR(50) fare_type "Lễ, Ngày thường"
+        BOOLEAN is_active "Trạng thái"
+        VARCHAR(20) fare_category "ADULT, CHILD..."
+        TIMESTAMP effective_from "Bắt đầu"
+        TIMESTAMP effective_to "Kết thúc"
+    }
+
+    STATIONS ||--o{ ROUTES : "is_departure"
+    STATIONS ||--o{ ROUTES : "is_arrival"
+    ROUTES ||--o{ ROUTE_STOPS : "has_stops"
+    STATIONS ||--o{ ROUTE_STOPS : "is_waypoint"
+    ROUTES ||--o{ ROUTE_LANDMARKS : "has_audio_guide"
+    ROUTES ||--o{ FARE_RULES : "has_pricing"
+    ROUTES ||--o{ SCHEDULES : "has_schedules"
+
+    %% ==========================================
+    %% 7. NOTIFICATION SERVICE
+    %% ==========================================
+    NOTIFICATION_TEMPLATES {
+        INT template_id PK "Mã mẫu thông báo"
+        VARCHAR(50) template_code "Mã code"
+        VARCHAR(20) channel "EMAIL, IN_APP"
+        VARCHAR(255) title_template "Mẫu tiêu đề"
+        TEXT body_template "Mẫu nội dung"
+        VARCHAR(50) event_trigger "Sự kiện kích hoạt"
+        BOOLEAN is_active "Trạng thái"
+    }
+
+    NOTIFICATIONS {
+        UUID notification_id PK "Mã tin nhắn"
+        UUID user_id FK "Gửi tới user"
+        INT template_id FK "Dùng mẫu"
+        VARCHAR(20) channel "Kênh gửi"
+        VARCHAR(100) recipient_email "Email nhận"
+        VARCHAR(255) title "Tiêu đề"
+        TEXT content "Nội dung"
+        VARCHAR(30) reference_type "Loại liên kết (BOOKING...)"
+        VARCHAR(64) reference_id "ID liên kết"
+        BOOLEAN is_read "Đã đọc"
+        TIMESTAMP read_at "Giờ đọc"
+        VARCHAR(20) status "SENT, FAILED"
+        TIMESTAMP created_at "Giờ tạo"
+    }
+
+    NOTIFICATION_TEMPLATES ||--o{ NOTIFICATIONS : "formats"
+    USERS ||--o{ NOTIFICATIONS : "receives"

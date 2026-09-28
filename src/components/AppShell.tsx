@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import { BookingProvider } from "../context/BookingContext";
+import { Outlet } from 'react-router-dom';
+import { BookingProvider } from '../context/BookingContext';
 
 export default function AppShell() {
   return (

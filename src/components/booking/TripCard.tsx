@@ -15,23 +15,23 @@ export default function TripCard({ trip, originLabel, destLabel, onSelect }: Tri
     <article
       className={
         isSoldOut
-          ? 'w-full bg-surface-container-low rounded-xl p-space-md md:p-space-lg shadow-none opacity-65 relative overflow-hidden'
-          : 'w-full bg-surface-container-lowest rounded-xl p-space-md md:p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden'
+          ? 'bg-surface-container-low p-space-md md:p-space-lg relative w-full overflow-hidden rounded-xl opacity-65 shadow-none'
+          : 'bg-surface-container-lowest p-space-md md:p-space-lg relative w-full overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-md'
       }
     >
       {isScenic && !isSoldOut && (
-        <div className="absolute top-0 right-0 px-3 py-1 bg-secondary-container text-on-secondary-container font-label-sm text-[10px] tracking-widest uppercase font-bold rounded-bl-lg">
+        <div className="bg-secondary-container text-on-secondary-container font-label-sm absolute top-0 right-0 rounded-bl-lg px-3 py-1 text-[10px] font-bold tracking-widest uppercase">
           Trải nghiệm Ngắm Cảnh
         </div>
       )}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
-        <div className="flex-1 space-y-space-sm">
-          <div className="flex items-center gap-2 flex-wrap">
+      <div className="gap-space-md flex flex-col justify-between md:flex-row md:items-center">
+        <div className="space-y-space-sm flex-1">
+          <div className="flex flex-wrap items-center gap-2">
             <span
               className={
                 isSoldOut
-                  ? 'px-2.5 py-0.5 rounded bg-outline text-on-primary font-label-sm text-label-sm font-semibold tracking-wider uppercase'
-                  : 'px-2.5 py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold tracking-wider uppercase'
+                  ? 'bg-outline text-on-primary font-label-sm text-label-sm rounded px-2.5 py-0.5 font-semibold tracking-wider uppercase'
+                  : 'bg-primary text-on-primary font-label-sm text-label-sm rounded px-2.5 py-0.5 font-semibold tracking-wider uppercase'
               }
             >
               {trip.code}
@@ -39,76 +39,154 @@ export default function TripCard({ trip, originLabel, destLabel, onSelect }: Tri
             <span
               className={
                 isSoldOut
-                  ? 'px-2 py-0.5 rounded bg-surface-variant font-label-sm text-label-sm text-on-surface-variant'
-                  : 'px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant'
+                  ? 'bg-surface-variant font-label-sm text-label-sm text-on-surface-variant rounded px-2 py-0.5'
+                  : 'bg-surface-container font-label-sm text-label-sm text-on-surface-variant rounded px-2 py-0.5'
               }
             >
               {trip.vessel.name}
             </span>
             {isSoldOut ? (
-              <span className="px-2 py-0.5 rounded bg-surface-dim text-on-surface-variant font-label-sm text-label-sm font-semibold">
+              <span className="bg-surface-dim text-on-surface-variant font-label-sm text-label-sm rounded px-2 py-0.5 font-semibold">
                 Đã hết vé (Sold out)
               </span>
             ) : trip.status === 'low' ? (
-              <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-label-sm text-label-sm font-semibold">
+              <span className="font-label-sm text-label-sm flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-900">
                 <span className="material-symbols-outlined text-[14px]">local_fire_department</span>
                 Chỉ còn {trip.availableSeats} ghế trống
               </span>
             ) : (
-              <span className="flex items-center gap-1 font-label-sm text-label-sm text-secondary font-medium">
-                <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+              <span className="font-label-sm text-label-sm text-secondary flex items-center gap-1 font-medium">
+                <span className="bg-secondary inline-block h-2 w-2 rounded-full"></span>
                 Còn {trip.availableSeats} chỗ trống
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-space-md sm:gap-space-lg pt-1">
+          <div className="gap-space-md sm:gap-space-lg flex items-center pt-1">
             <div>
-              <p className={isSoldOut ? 'font-headline-md text-headline-md text-on-surface-variant font-semibold leading-none' : 'font-headline-md text-headline-md text-primary font-semibold leading-none'}>
+              <p
+                className={
+                  isSoldOut
+                    ? 'font-headline-md text-headline-md text-on-surface-variant leading-none font-semibold'
+                    : 'font-headline-md text-headline-md text-primary leading-none font-semibold'
+                }
+              >
                 {trip.departureTime}
               </p>
-              <p className={isSoldOut ? 'font-body-md text-body-md text-outline mt-1' : 'font-body-md text-body-md text-on-surface-variant mt-1'}>{originLabel}</p>
+              <p
+                className={
+                  isSoldOut
+                    ? 'font-body-md text-body-md text-outline mt-1'
+                    : 'font-body-md text-body-md text-on-surface-variant mt-1'
+                }
+              >
+                {originLabel}
+              </p>
             </div>
-            <div className="flex flex-col items-center px-space-xs flex-1 max-w-[140px]">
-              <span className={isSoldOut ? 'font-label-sm text-label-sm text-outline font-medium' : 'font-label-sm text-label-sm text-on-surface-variant font-medium'}>
+            <div className="px-space-xs flex max-w-[140px] flex-1 flex-col items-center">
+              <span
+                className={
+                  isSoldOut
+                    ? 'font-label-sm text-label-sm text-outline font-medium'
+                    : 'font-label-sm text-label-sm text-on-surface-variant font-medium'
+                }
+              >
                 {trip.durationMinutes} phút
               </span>
-              <div className="w-full flex items-center gap-1 my-1">
-                <span className={isSoldOut ? 'w-1.5 h-1.5 rounded-full bg-outline' : 'w-1.5 h-1.5 rounded-full bg-secondary'}></span>
-                <div className="h-0.5 flex-1 bg-surface-variant relative">
-                  {!isSoldOut && <div className="absolute inset-y-0 left-0 w-2/3 bg-secondary"></div>}
+              <div className="my-1 flex w-full items-center gap-1">
+                <span
+                  className={
+                    isSoldOut
+                      ? 'bg-outline h-1.5 w-1.5 rounded-full'
+                      : 'bg-secondary h-1.5 w-1.5 rounded-full'
+                  }
+                ></span>
+                <div className="bg-surface-variant relative h-0.5 flex-1">
+                  {!isSoldOut && (
+                    <div className="bg-secondary absolute inset-y-0 left-0 w-2/3"></div>
+                  )}
                 </div>
-                <span className={isSoldOut ? 'material-symbols-outlined text-[14px] text-outline' : 'material-symbols-outlined text-[14px] text-secondary'}>arrow_forward</span>
+                <span
+                  className={
+                    isSoldOut
+                      ? 'material-symbols-outlined text-outline text-[14px]'
+                      : 'material-symbols-outlined text-secondary text-[14px]'
+                  }
+                >
+                  arrow_forward
+                </span>
               </div>
-              <span className={isSoldOut ? 'font-label-sm text-[10px] text-outline uppercase tracking-wider' : 'font-label-sm text-[10px] text-outline uppercase tracking-wider'}>
+              <span
+                className={
+                  isSoldOut
+                    ? 'font-label-sm text-outline text-[10px] tracking-wider uppercase'
+                    : 'font-label-sm text-outline text-[10px] tracking-wider uppercase'
+                }
+              >
                 {isSoldOut ? 'Hết chỗ' : 'Chạy thẳng'}
               </span>
             </div>
             <div>
-              <p className={isSoldOut ? 'font-headline-md text-headline-md text-on-surface-variant font-semibold leading-none' : 'font-headline-md text-headline-md text-primary font-semibold leading-none'}>
+              <p
+                className={
+                  isSoldOut
+                    ? 'font-headline-md text-headline-md text-on-surface-variant leading-none font-semibold'
+                    : 'font-headline-md text-headline-md text-primary leading-none font-semibold'
+                }
+              >
                 {trip.arrivalTime}
               </p>
-              <p className={isSoldOut ? 'font-body-md text-body-md text-outline mt-1' : 'font-body-md text-body-md text-on-surface-variant mt-1'}>{destLabel}</p>
+              <p
+                className={
+                  isSoldOut
+                    ? 'font-body-md text-body-md text-outline mt-1'
+                    : 'font-body-md text-body-md text-on-surface-variant mt-1'
+                }
+              >
+                {destLabel}
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="flex md:flex-col items-end justify-between md:justify-center pt-space-sm md:pt-0 gap-space-xs md:pl-space-md">
+        <div className="pt-space-sm gap-space-xs md:pl-space-md flex items-end justify-between md:flex-col md:justify-center md:pt-0">
           <div className="text-left md:text-right">
             <span className="font-label-sm text-label-sm text-outline block">Giá vé từ</span>
-            <div className="flex items-baseline md:justify-end gap-1">
-              <span className={isSoldOut ? 'font-headline-sm text-headline-sm text-outline font-bold' : isScenic ? 'font-headline-sm text-headline-sm text-on-tertiary-container font-bold' : 'font-headline-sm text-headline-sm text-primary font-bold'}>
+            <div className="flex items-baseline gap-1 md:justify-end">
+              <span
+                className={
+                  isSoldOut
+                    ? 'font-headline-sm text-headline-sm text-outline font-bold'
+                    : isScenic
+                      ? 'font-headline-sm text-headline-sm text-on-tertiary-container font-bold'
+                      : 'font-headline-sm text-headline-sm text-primary font-bold'
+                }
+              >
                 {trip.price.toLocaleString('vi-VN')}
               </span>
-              <span className={isSoldOut ? 'font-label-md text-label-md text-outline font-medium' : 'font-label-md text-label-md text-on-surface font-medium'}>đ/khách</span>
+              <span
+                className={
+                  isSoldOut
+                    ? 'font-label-md text-label-md text-outline font-medium'
+                    : 'font-label-md text-label-md text-on-surface font-medium'
+                }
+              >
+                đ/khách
+              </span>
             </div>
-            <span className={isSoldOut ? 'font-label-sm text-[10px] text-outline' : 'font-label-sm text-[10px] text-on-surface-variant'}>
+            <span
+              className={
+                isSoldOut
+                  ? 'font-label-sm text-outline text-[10px]'
+                  : 'font-label-sm text-on-surface-variant text-[10px]'
+              }
+            >
               {isSoldOut ? 'Đã kín chỗ' : 'Đã bao gồm VAT & BH'}
             </span>
           </div>
           {isSoldOut ? (
             <button
-              className="inline-flex items-center justify-center gap-1.5 px-space-md py-2.5 rounded bg-surface-variant text-outline cursor-not-allowed font-title-md text-body-md shadow-none tracking-wide"
+              className="px-space-md bg-surface-variant text-outline font-title-md text-body-md inline-flex cursor-not-allowed items-center justify-center gap-1.5 rounded py-2.5 tracking-wide shadow-none"
               disabled
               type="button"
             >
@@ -117,7 +195,7 @@ export default function TripCard({ trip, originLabel, destLabel, onSelect }: Tri
             </button>
           ) : (
             <button
-              className="inline-flex items-center justify-center gap-1.5 px-space-md py-2.5 rounded bg-on-tertiary-container hover:bg-secondary text-on-primary font-title-md text-body-md transition-colors shadow-sm tracking-wide"
+              className="px-space-md bg-on-tertiary-container hover:bg-secondary text-on-primary font-title-md text-body-md inline-flex items-center justify-center gap-1.5 rounded py-2.5 tracking-wide shadow-sm transition-colors"
               onClick={onSelect}
               type="button"
             >

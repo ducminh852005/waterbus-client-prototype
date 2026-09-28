@@ -1,4 +1,11 @@
-import type { Trip, Seat, PassengerInfo, PaymentMethodId, PriceBreakdown, BookingConfirmation } from '../types';
+import type {
+  Trip,
+  Seat,
+  PassengerInfo,
+  PaymentMethodId,
+  PriceBreakdown,
+  BookingConfirmation,
+} from '../types';
 import { delay } from './delay';
 
 export interface CreateBookingPayload {

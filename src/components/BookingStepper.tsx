@@ -9,45 +9,66 @@ export default function BookingStepper({ currentStep = 1 }: { currentStep?: numb
   ];
 
   return (
-    <nav aria-label="Quy trình đặt vé" className="w-full mb-space-xl bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
-      <ol className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-space-sm">
+    <nav
+      aria-label="Quy trình đặt vé"
+      className="mb-space-xl bg-surface-container-lowest p-space-md w-full rounded-xl shadow-sm"
+    >
+      <ol className="gap-space-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         {steps.map((step) => {
           const isActive = step.id === currentStep;
           const isPast = step.id < currentStep;
 
           if (isActive) {
             return (
-              <li key={step.id} className="relative flex items-center gap-space-xs bg-on-tertiary-container/10 p-space-xs rounded">
-                <span className="w-7 h-7 rounded-full bg-on-tertiary-container text-on-primary font-label-md text-label-md flex items-center justify-center font-bold">
+              <li
+                key={step.id}
+                className="gap-space-xs bg-on-tertiary-container/10 p-space-xs relative flex items-center rounded"
+              >
+                <span className="bg-on-tertiary-container text-on-primary font-label-md text-label-md flex h-7 w-7 items-center justify-center rounded-full font-bold">
                   {step.id}
                 </span>
                 <div className="min-w-0">
-                  <span className="block font-label-sm text-label-sm uppercase text-on-tertiary-container font-semibold tracking-wider">{step.label}</span>
-                  <span className="block font-title-md text-body-md text-primary font-bold truncate">{step.title}</span>
+                  <span className="font-label-sm text-label-sm text-on-tertiary-container block font-semibold tracking-wider uppercase">
+                    {step.label}
+                  </span>
+                  <span className="font-title-md text-body-md text-primary block truncate font-bold">
+                    {step.title}
+                  </span>
                 </div>
               </li>
             );
           } else if (isPast) {
             return (
-              <li key={step.id} className="flex items-center gap-space-xs p-space-xs text-secondary group">
-                <div className="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-title-md text-label-md">
+              <li
+                key={step.id}
+                className="gap-space-xs p-space-xs text-secondary group flex items-center"
+              >
+                <div className="bg-secondary-container text-on-secondary-container font-title-md text-label-md flex h-7 w-7 items-center justify-center rounded-full">
                   <span className="material-symbols-outlined text-[16px]">check</span>
                 </div>
                 <div className="min-w-0">
-                  <span className="block font-label-sm text-label-sm uppercase text-secondary font-semibold tracking-wider">{step.label}</span>
-                  <span className="block font-body-md text-body-md text-on-surface truncate">{step.title}</span>
+                  <span className="font-label-sm text-label-sm text-secondary block font-semibold tracking-wider uppercase">
+                    {step.label}
+                  </span>
+                  <span className="font-body-md text-body-md text-on-surface block truncate">
+                    {step.title}
+                  </span>
                 </div>
               </li>
             );
           } else {
             return (
-              <li key={step.id} className="flex items-center gap-space-xs p-space-xs opacity-60">
-                <span className="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface-variant font-label-md text-label-md flex items-center justify-center font-medium">
+              <li key={step.id} className="gap-space-xs p-space-xs flex items-center opacity-60">
+                <span className="bg-surface-container-highest text-on-surface-variant font-label-md text-label-md flex h-7 w-7 items-center justify-center rounded-full font-medium">
                   {step.id}
                 </span>
                 <div className="min-w-0">
-                  <span className="block font-label-sm text-label-sm uppercase text-outline">{step.label}</span>
-                  <span className="block font-body-md text-body-md text-on-surface truncate">{step.title}</span>
+                  <span className="font-label-sm text-label-sm text-outline block uppercase">
+                    {step.label}
+                  </span>
+                  <span className="font-body-md text-body-md text-on-surface block truncate">
+                    {step.title}
+                  </span>
                 </div>
               </li>
             );

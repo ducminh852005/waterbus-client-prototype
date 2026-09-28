@@ -1,6 +1,5 @@
 import type { StationCode } from './station';
 import type { Trip } from './trip';
-import type { Seat } from './seat';
 import type { PassengerInfo } from './passenger';
 import type { PaymentMethodId } from './payment';
 
@@ -22,15 +21,25 @@ export interface PriceBreakdown {
   voucherCode?: string;
 }
 
+export interface Ticket {
+  ticketId: number;
+  seatNumber: string;
+  qrTokenHash: string;
+  status: 'VALID' | 'USED' | 'CANCELLED';
+  tripInstanceId: number;
+}
+
 export interface BookingConfirmation {
+  bookingId: number;
   bookingCode: string;
+  customerPhone: string;
   trip: Trip;
   returnTrip?: Trip;
-  seats: Seat[];
-  returnSeats?: Seat[];
+  tickets: Ticket[];
+  returnTickets?: Ticket[];
   passengerInfo: PassengerInfo;
   paymentMethod: PaymentMethodId;
   priceBreakdown: PriceBreakdown;
-  qrPayload: string;
+  finalAmount: number;
   issuedAt: string;
 }

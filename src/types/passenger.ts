@@ -2,10 +2,7 @@ export type PassengerType = 'adult' | 'child' | 'senior';
 export type SpecialRequest = 'wheelchair' | 'elderly' | 'pet';
 
 export interface Passenger {
-  seatId: string;
-  fullName: string;
-  birthYear: string;
-  idNumber?: string;
+  seatId?: string | number;
   type: PassengerType;
 }
 

@@ -1,0 +1,13 @@
+```mermaid
+erDiagram
+    SEAT_RESERVATIONS {
+        bigint reservation_id PK
+        bigint trip_instance_id REF
+        int seat_id REF
+        bigint booking_id REF "Nullable"
+        string seat_number
+        string status "AVAILABLE, HOLDING, BOOKED"
+        timestamp lock_expires_at "Redis TTL"
+        string hold_token
+    }
+```

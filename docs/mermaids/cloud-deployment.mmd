@@ -1,0 +1,83 @@
+```mermaid
+flowchart TB
+    %% --- CLIENT LAYER ---
+    subgraph Client_Layer [Client & Interface Layer]
+        direction LR
+        Web[Web App<br/>(ReactJS - Customer Booking)]
+        Mobile[Mobile App<br/>(Flutter - Customer & GPS Tracking)]
+        POS[Mobile POS App<br/>(Flutter - Ticket Inspector)]
+        Admin[Admin Dashboard<br/>(React/NextJS - Administration)]
+    end
+
+    %% --- EDGE/GATEWAY LAYER ---
+    subgraph Edge_Layer [Edge & API Gateway Layer]
+        CDN[CDN & WAF<br/>(Cloudflare)]
+        APIGW[API Gateway & Load Balancer<br/>(Spring Cloud Gateway)]
+    end
+
+    %% --- MICROSERVICES LAYER ---
+    subgraph Services_Layer [Microservices Layer (Spring Boot / Kubernetes)]
+        direction LR
+        IAM(1. IAM Svc)
+        Booking(2. Booking Svc)
+        Pay(3. Payment Svc)
+        Inv(4. Inventory Svc)
+        Fleet(5. Fleet & Schedule)
+        Cat(6. Catalog & Route)
+        Notif(7. Notification Svc)
+    end
+
+    %% --- INFRASTRUCTURE LAYER ---
+    subgraph Infrastructure_Layer [Data & Message Broker Layer]
+        direction LR
+        Redis[(Redis Cluster<br/>Cache & TTL Seat Lock)]
+        Kafka{Apache Kafka<br/>Event Bus}
+        DB[(PostgreSQL Cluster<br/>7 Independent DBs)]
+    end
+
+    %% --- THIRDPARTY LAYER ---
+    subgraph External_Layer [External Services]
+        direction LR
+        PGW[Payment Gateways<br/>VNPAY, MoMo, Stripe]
+        Mail[Email/SMS Provider<br/>Sendgrid, Twilio]
+        Map[Map/GPS API<br/>Google Maps]
+    end
+
+    %% --- CONNECTIONS ---
+    Web & Mobile & POS & Admin -->|HTTPS / WSS| CDN
+    CDN -->|Route/Filter| APIGW
+    
+    APIGW -->|REST / gRPC| IAM
+    APIGW -->|REST / gRPC| Booking
+    APIGW -->|REST / gRPC| Pay
+    APIGW -->|REST / gRPC| Inv
+    APIGW -->|REST / gRPC| Fleet
+    APIGW -->|REST / gRPC| Cat
+    APIGW -->|REST / gRPC| Notif
+
+    %% Infrastructure Connections
+    Inv <==>|Ultra-fast Seat Lock| Redis
+    Cat -.->|Cache Static Data| Redis
+    Fleet -.->|Cache Ship Coordinates| Redis
+    
+    IAM & Booking & Pay & Inv & Fleet & Cat & Notif -->|Read/Write| DB
+    IAM & Booking & Pay & Inv & Fleet & Cat & Notif <==>|Pub/Sub Events| Kafka
+
+    %% External Connections
+    Pay -->|API| PGW
+    Notif -->|API| Mail
+    Fleet & Cat -->|API| Map
+
+    %% STYLING
+    classDef client fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000;
+    classDef gw fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#000;
+    classDef service fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000;
+    classDef infra fill:#ffe0b2,stroke:#ff9800,stroke-width:2px,color:#000;
+    classDef external fill:#eceff1,stroke:#607d8b,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+
+    class Web,Mobile,POS,Admin client;
+    class CDN,APIGW gw;
+    class IAM,Booking,Pay,Inv,Fleet,Cat,Notif service;
+    class Redis,DB,Kafka infra;
+    class PGW,Mail,Map external;
+```

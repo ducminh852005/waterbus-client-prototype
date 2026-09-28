@@ -1,0 +1,18 @@
+```mermaid
+erDiagram
+    ROLES {
+        int role_id PK
+        string role_name
+        string description
+    }
+    USERS {
+        uuid user_id PK
+        int role_id FK
+        string full_name
+        string email "UNIQUE"
+        string phone "UNIQUE"
+        string password_hash
+        boolean is_verified
+    }
+    ROLES ||--o{ USERS : "has"
+```

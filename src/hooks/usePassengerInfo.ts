@@ -4,7 +4,10 @@ import { useBooking } from '../context/BookingContext';
 import type { ContactInfo, Passenger, SpecialRequest } from '../types';
 
 function buildInitialPassengers(seatIds: string[]): Passenger[] {
-  return seatIds.map((seatId) => ({ seatId, fullName: '', birthYear: '', idNumber: '', type: 'adult' }));
+  return seatIds.map((seatId) => ({
+    seatId,
+    type: 'adult',
+  }));
 }
 
 export function usePassengerInfo() {
@@ -37,12 +40,12 @@ export function usePassengerInfo() {
   };
 
   const copyContactToPassenger = (index: number) => {
-    updatePassenger(index, { fullName: contact.fullName });
+    // Không còn áp dụng vì form passenger không còn hỏi fullName
   };
 
   const toggleSpecialRequest = (request: SpecialRequest) => {
     setSpecialRequests((prev) =>
-      prev.includes(request) ? prev.filter((r) => r !== request) : [...prev, request],
+      prev.includes(request) ? prev.filter((r) => r !== request) : [...prev, request]
     );
   };
 
@@ -51,10 +54,7 @@ export function usePassengerInfo() {
       setError('Vui lòng nhập đầy đủ thông tin người đặt vé.');
       return false;
     }
-    if (passengers.some((p) => !p.fullName.trim() || !p.birthYear.trim())) {
-      setError('Vui lòng nhập đầy đủ họ tên và năm sinh cho từng hành khách.');
-      return false;
-    }
+    // Bỏ qua validate fullName và birthYear cho từng passenger vì ERD không yêu cầu
     if (!agreedToTerms) {
       setError('Vui lòng đồng ý với điều khoản dịch vụ trước khi tiếp tục.');
       return false;

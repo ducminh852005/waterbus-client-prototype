@@ -25,8 +25,13 @@ export function useTripSearch() {
       return;
     }
     setLoading(true);
-    const params = isReturn 
-      ? { ...searchParams, from: searchParams.to, to: searchParams.from, date: searchParams.returnDate! }
+    const params = isReturn
+      ? {
+          ...searchParams,
+          from: searchParams.to,
+          to: searchParams.from,
+          date: searchParams.returnDate!,
+        }
       : searchParams;
 
     searchTrips(params).then((result) => {
@@ -34,7 +39,13 @@ export function useTripSearch() {
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams?.from, searchParams?.to, searchParams?.date, searchParams?.returnDate, isReturn]);
+  }, [
+    searchParams?.from,
+    searchParams?.to,
+    searchParams?.date,
+    searchParams?.returnDate,
+    isReturn,
+  ]);
 
   const sortedTrips = useMemo(() => {
     const list = [...trips];
@@ -70,7 +81,12 @@ export function useTripSearch() {
       const date = addDays(dateBase, i - 3);
       const dayTrips = generateTrips(origin, dest, date);
       const minPrice = Math.min(...dayTrips.map((t) => t.price));
-      return { date, weekday: formatWeekdayLabel(date), shortDate: formatShortDate(date), minPrice };
+      return {
+        date,
+        weekday: formatWeekdayLabel(date),
+        shortDate: formatShortDate(date),
+        minPrice,
+      };
     });
   }, [searchParams, isReturn]);
 

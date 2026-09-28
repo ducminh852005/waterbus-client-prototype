@@ -1,0 +1,33 @@
+```mermaid
+sequenceDiagram
+    participant C as Client (App/Web)
+    participant B as Booking Svc
+    participant I as Inventory Svc
+    participant K as Kafka Broker
+    participant P as Payment Svc
+    participant N as Notification Svc
+
+    C->>I: 1. Hold Seat Request (POST /hold)
+    I-->>C: 2. Return hold_token (Seat locked in Redis for 10m)
+    
+    C->>B: 3. Create Order (With hold_token)
+    B->>K: 4. Publish Event [Booking_Created]
+    B-->>C: 5. Return booking_id (Awaiting Payment)
+    
+    C->>P: 6. Payment (Send booking_id)
+    P->>P: 7. Call Payment Gateway (VNPAY)
+    P->>K: 8. Publish Event [Payment_Success]
+    
+    K-->>B: 9. Consume [Payment_Success]
+    B->>B: 10. Change Booking Status -> PAID, Generate QR Ticket
+    B->>K: 11. Publish Event [Ticket_Issued]
+    
+    K-->>I: 12. Consume [Ticket_Issued]
+    I->>I: 13. Change Seat_Reservation -> BOOKED (Hard lock seat in DB)
+    
+    K-->>N: 14. Consume [Ticket_Issued]
+    N->>N: 15. Send QR Ticket Email & Push In-app Notification to customer
+    
+    C->>B: 16. Polling/WebSocket check status
+    B-->>C: 17. Return Ticket Successfully!
+```

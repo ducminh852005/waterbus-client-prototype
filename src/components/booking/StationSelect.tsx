@@ -20,14 +20,17 @@ export default function StationSelect({
   options,
 }: StationSelectProps) {
   return (
-    <div className="lg:col-span-5 bg-surface-container-low p-space-sm rounded-xl">
-      <label className="flex items-center gap-1 font-label-sm text-label-sm uppercase tracking-wider text-outline mb-1" htmlFor={id}>
+    <div className="bg-surface-container-low p-space-sm rounded-xl lg:col-span-5">
+      <label
+        className="font-label-sm text-label-sm text-outline mb-1 flex items-center gap-1 tracking-wider uppercase"
+        htmlFor={id}
+      >
         <span className={`material-symbols-outlined text-[16px] ${iconColorClass}`}>{icon}</span>
         <span className="">{label}</span>
       </label>
       <div className="relative">
         <select
-          className="w-full bg-transparent font-title-md text-title-md text-primary font-medium focus:outline-none cursor-pointer pr-space-md appearance-none"
+          className="font-title-md text-title-md text-primary pr-space-md w-full cursor-pointer appearance-none bg-transparent font-medium focus:outline-none"
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value as StationCode)}
@@ -38,7 +41,9 @@ export default function StationSelect({
             </option>
           ))}
         </select>
-        <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+        <span className="material-symbols-outlined text-outline pointer-events-none absolute top-1/2 right-0 -translate-y-1/2">
+          expand_more
+        </span>
       </div>
     </div>
   );

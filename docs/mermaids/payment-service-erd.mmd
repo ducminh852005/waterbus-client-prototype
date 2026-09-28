@@ -1,0 +1,29 @@
+```mermaid
+erDiagram
+    CUSTOMER_PAYMENT_METHODS {
+        bigint cpm_id PK
+        uuid user_id REF
+        string payment_gateway
+        string gateway_token "PCI-DSS Vault"
+        string card_last_four
+    }
+    PAYMENT_TRANSACTIONS {
+        bigint payment_id PK
+        bigint booking_id REF
+        bigint cpm_id FK "Nullable"
+        string transaction_code "UNIQUE"
+        decimal amount
+        string payment_status
+        string idempotency_key
+    }
+    REFUND_TRANSACTIONS {
+        uuid refund_id PK
+        bigint payment_id FK
+        bigint booking_id REF
+        decimal refund_amount
+        string status
+    }
+
+    CUSTOMER_PAYMENT_METHODS ||--o{ PAYMENT_TRANSACTIONS : "used for"
+    PAYMENT_TRANSACTIONS ||--o{ REFUND_TRANSACTIONS : "refunded via"
+```

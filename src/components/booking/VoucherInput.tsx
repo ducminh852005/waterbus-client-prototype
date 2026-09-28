@@ -9,20 +9,36 @@ type VoucherInputProps = {
   onRemove: () => void;
 };
 
-export default function VoucherInput({ code, onCodeChange, applied, error, onApply, onRemove }: VoucherInputProps) {
+export default function VoucherInput({
+  code,
+  onCodeChange,
+  applied,
+  error,
+  onApply,
+  onRemove,
+}: VoucherInputProps) {
   return (
-    <div className="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm space-y-space-sm">
+    <div className="p-space-lg bg-surface-container-lowest space-y-space-sm rounded-xl shadow-sm">
       <div className="flex items-center justify-between">
-        <label className="font-title-md text-title-md text-on-surface flex items-center gap-space-xs" htmlFor="voucher-input">
-          <span className="material-symbols-outlined text-on-tertiary-container text-[20px]">loyalty</span>
+        <label
+          className="font-title-md text-title-md text-on-surface gap-space-xs flex items-center"
+          htmlFor="voucher-input"
+        >
+          <span className="material-symbols-outlined text-on-tertiary-container text-[20px]">
+            loyalty
+          </span>
           Mã giảm giá & Khuyến mại
         </label>
-        {applied && <span className="font-label-sm text-label-sm text-secondary uppercase font-medium">1 mã đang áp dụng</span>}
+        {applied && (
+          <span className="font-label-sm text-label-sm text-secondary font-medium uppercase">
+            1 mã đang áp dụng
+          </span>
+        )}
       </div>
-      <div className="flex gap-space-sm">
+      <div className="gap-space-sm flex">
         <div className="relative flex-1">
           <input
-            className="w-full bg-surface-container-low px-space-md py-2.5 rounded text-body-md font-body-md text-on-surface uppercase tracking-wider focus:outline-none focus:bg-surface-container"
+            className="bg-surface-container-low px-space-md text-body-md font-body-md text-on-surface focus:bg-surface-container w-full rounded py-2.5 tracking-wider uppercase focus:outline-none"
             id="voucher-input"
             placeholder="NHẬP MÃ GIẢM GIÁ"
             type="text"
@@ -30,11 +46,13 @@ export default function VoucherInput({ code, onCodeChange, applied, error, onApp
             onChange={(e) => onCodeChange(e.target.value)}
           />
           {applied && (
-            <span className="absolute right-3 top-2.5 material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+            <span className="material-symbols-outlined text-secondary absolute top-2.5 right-3 text-[20px]">
+              check_circle
+            </span>
           )}
         </div>
         <button
-          className="px-space-md py-2.5 bg-primary hover:bg-secondary text-on-primary font-title-md text-body-md rounded transition-colors shadow-sm uppercase tracking-wider"
+          className="px-space-md bg-primary hover:bg-secondary text-on-primary font-title-md text-body-md rounded py-2.5 tracking-wider uppercase shadow-sm transition-colors"
           type="button"
           onClick={onApply}
         >
@@ -43,14 +61,19 @@ export default function VoucherInput({ code, onCodeChange, applied, error, onApp
       </div>
 
       {applied && (
-        <div className="flex items-center justify-between bg-secondary-fixed/40 px-space-md py-2 rounded">
-          <div className="flex items-center gap-space-xs">
+        <div className="bg-secondary-fixed/40 px-space-md flex items-center justify-between rounded py-2">
+          <div className="gap-space-xs flex items-center">
             <span className="material-symbols-outlined text-secondary text-[18px]">verified</span>
             <span className="font-label-md text-label-md text-on-secondary-fixed-variant font-semibold">
               Ưu đãi {applied.code}: {applied.description}
             </span>
           </div>
-          <button aria-label="Gỡ bỏ mã" className="text-outline hover:text-error transition-colors flex items-center" type="button" onClick={onRemove}>
+          <button
+            aria-label="Gỡ bỏ mã"
+            className="text-outline hover:text-error flex items-center transition-colors"
+            type="button"
+            onClick={onRemove}
+          >
             <span className="material-symbols-outlined text-[16px]">close</span>
           </button>
         </div>

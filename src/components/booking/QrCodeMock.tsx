@@ -4,13 +4,45 @@ type QrCodeMockProps = {
 
 export default function QrCodeMock({ payload }: QrCodeMockProps) {
   return (
-    <div className="bg-surface-container-lowest p-space-md rounded-lg shadow-md mb-space-sm flex flex-col items-center justify-center">
-      <svg className="w-48 h-48 text-primary" fill="currentColor" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect fill="none" height="24" rx="2" stroke="currentColor" strokeWidth="4" width="24" x="10" y="10"></rect>
+    <div className="bg-surface-container-lowest p-space-md mb-space-sm flex flex-col items-center justify-center rounded-lg shadow-md">
+      <svg
+        className="text-primary h-48 w-48"
+        fill="currentColor"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          fill="none"
+          height="24"
+          rx="2"
+          stroke="currentColor"
+          strokeWidth="4"
+          width="24"
+          x="10"
+          y="10"
+        ></rect>
         <rect fill="currentColor" height="10" width="10" x="17" y="17"></rect>
-        <rect fill="none" height="24" rx="2" stroke="currentColor" strokeWidth="4" width="24" x="66" y="10"></rect>
+        <rect
+          fill="none"
+          height="24"
+          rx="2"
+          stroke="currentColor"
+          strokeWidth="4"
+          width="24"
+          x="66"
+          y="10"
+        ></rect>
         <rect fill="currentColor" height="10" width="10" x="73" y="17"></rect>
-        <rect fill="none" height="24" rx="2" stroke="currentColor" strokeWidth="4" width="24" x="10" y="66"></rect>
+        <rect
+          fill="none"
+          height="24"
+          rx="2"
+          stroke="currentColor"
+          strokeWidth="4"
+          width="24"
+          x="10"
+          y="66"
+        ></rect>
         <rect fill="currentColor" height="10" width="10" x="17" y="73"></rect>
         <rect height="5" width="5" x="38" y="12"></rect>
         <rect height="5" width="5" x="47" y="12"></rect>
@@ -37,7 +69,7 @@ export default function QrCodeMock({ payload }: QrCodeMockProps) {
         <rect height="8" width="6" x="68" y="80"></rect>
         <rect height="6" width="10" x="78" y="82"></rect>
       </svg>
-      <span className="font-label-sm text-outline tracking-wider mt-2 font-mono">{payload}</span>
+      <span className="font-label-sm text-outline mt-2 font-mono tracking-wider">{payload}</span>
     </div>
   );
 }

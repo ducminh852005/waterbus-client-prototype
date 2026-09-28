@@ -10,7 +10,10 @@ export function useSeatSelection() {
   const navigate = useNavigate();
   const { bookingData, updateBooking } = useBooking();
   const { selectedTrip, selectedReturnTrip, searchParams } = bookingData;
-  const isReturn = searchParams?.tripType === 'round-trip' && selectedReturnTrip !== null && bookingData.selectedSeats.length > 0;
+  const isReturn =
+    searchParams?.tripType === 'round-trip' &&
+    selectedReturnTrip !== null &&
+    bookingData.selectedSeats.length > 0;
   const currentTrip = isReturn ? selectedReturnTrip : selectedTrip;
 
   const [seatMap, setSeatMap] = useState<SeatMap | null>(null);
@@ -40,7 +43,7 @@ export function useSeatSelection() {
 
   const selectedSeats = useMemo(
     () => allSeats.filter((s) => selectedSeatIds.includes(s.id)),
-    [allSeats, selectedSeatIds],
+    [allSeats, selectedSeatIds]
   );
 
   const toggleSeat = (seat: Seat) => {

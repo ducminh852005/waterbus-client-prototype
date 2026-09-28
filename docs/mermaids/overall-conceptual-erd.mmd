@@ -1,0 +1,44 @@
+```mermaid
+erDiagram
+    %% Identity
+    ROLE ||--o{ USER : "authorizes"
+
+    %% Catalog
+    STATION ||--o{ ROUTE : "departure/arrival station"
+    ROUTE ||--o{ ROUTE_STOP : "has stop"
+    STATION ||--o{ ROUTE_STOP : "is stop"
+    ROUTE ||--o{ ROUTE_LANDMARK : "has landmark (Audio)"
+    ROUTE ||--o{ FARE_RULE : "applies fare rule"
+
+    %% Fleet
+    SHIP ||--o{ SEAT : "contains physical seat"
+    SHIP ||--o{ SHIP_TELEMETRY : "emits GPS signal"
+    ROUTE ||--o{ SCHEDULE : "has template schedule"
+    SHIP ||--o{ SCHEDULE : "allocated to run"
+    SCHEDULE ||--o{ TRIP_INSTANCE : "generates actual trip"
+
+    %% Inventory
+    TRIP_INSTANCE ||--o{ SEAT_RESERVATION : "trip seat inventory"
+
+    %% Payment
+    USER ||--o{ CUSTOMER_PAYMENT_METHOD : "saves card/wallet"
+    CUSTOMER_PAYMENT_METHOD ||--o{ PAYMENT_TRANSACTION : "used for payment"
+    PAYMENT_TRANSACTION ||--o{ REFUND_TRANSACTION : "refunds"
+
+    %% Promotion & Notification
+    USER ||--o{ NOTIFICATION : "receives notification"
+    NOTIFICATION_TEMPLATE ||--o{ NOTIFICATION : "uses template"
+    USER ||--o{ USER_VOUCHER : "saves discount code"
+    VOUCHER ||--o{ USER_VOUCHER : "takes from inventory"
+
+    %% Booking & Core
+    USER ||--o{ BOOKING : "books ticket"
+    USER_VOUCHER ||--o{ BOOKING : "applies discount"
+    BOOKING ||--o| PAYMENT_TRANSACTION : "paid via"
+    BOOKING ||--o{ TICKET : "issues ticket"
+    SEAT_RESERVATION ||--|| TICKET : "transforms into"
+    TRIP_INSTANCE ||--o{ TICKET : "ticket belongs to trip"
+    
+    TICKET ||--o{ TICKET_SCAN_EVENT : "ticket scan history"
+    USER ||--o{ TICKET_SCAN_EVENT : "ticket inspector"
+```
