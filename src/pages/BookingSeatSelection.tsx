@@ -123,7 +123,10 @@ const BookingSeatSelection = () => {
                   </div>
                 </div>
 
-                <div className="bg-surface-container-lowest p-space-lg relative overflow-hidden rounded-2xl shadow-sm">
+                <div
+                  className="animate-fade-in-up bg-surface-container-lowest p-space-lg relative overflow-hidden rounded-2xl shadow-sm"
+                  style={{ animationDelay: '0.1s' }}
+                >
                   <div className="mb-space-lg relative flex flex-col items-center">
                     <div className="bg-surface-container-high text-primary-container flex h-14 w-32 items-center justify-center rounded-t-full shadow-inner">
                       <div className="flex flex-col items-center">
@@ -168,7 +171,10 @@ const BookingSeatSelection = () => {
                 </div>
 
                 <div className="gap-space-md grid grid-cols-1 sm:grid-cols-2">
-                  <div className="bg-surface-container-lowest p-space-md gap-space-sm flex items-start rounded-xl shadow-sm">
+                  <div
+                    className="animate-fade-in-up bg-surface-container-lowest p-space-md gap-space-sm flex items-start rounded-xl shadow-sm"
+                    style={{ animationDelay: '0.2s' }}
+                  >
                     <span className="material-symbols-outlined text-secondary text-[24px]">
                       wb_sunny
                     </span>
@@ -182,7 +188,10 @@ const BookingSeatSelection = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-surface-container-lowest p-space-md gap-space-sm flex items-start rounded-xl shadow-sm">
+                  <div
+                    className="animate-fade-in-up bg-surface-container-lowest p-space-md gap-space-sm flex items-start rounded-xl shadow-sm"
+                    style={{ animationDelay: '0.3s' }}
+                  >
                     <span className="material-symbols-outlined text-on-tertiary-container text-[24px]">
                       verified_user
                     </span>

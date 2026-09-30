@@ -1,23 +1,95 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useBookingSearch } from '../hooks/useBookingSearch';
 import type { StationCode } from '../types';
 import { BookingSearchWidget } from '../components/booking';
+import { useBooking } from '../context/BookingContext';
+import { searchTrips } from '../services/tripService';
+
+const STATIONS_DATA = [
+  {
+    id: 1,
+    title: '1. Bến Ga Bạch Đằng',
+    address: 'Số 10B Tôn Đức Thắng, P. Bến Nghé, Quận 1',
+    badge: 'Ga Trung Tâm',
+    image: '/images/asset_7fa6197d.webp',
+    imageAlt:
+      'Ga tàu thủy Bạch Đằng Waterbus Station với sàn gỗ rộng mở nhìn ra bến cảng trung tâm Sài Gòn',
+    subtitle: 'Ga Trung Tâm • Quận 1',
+    name: 'Bến Tàu Thủy Bạch Đằng',
+    description:
+      'Sàn gỗ ngắm cảnh ngoài trời, phòng vé số hóa, cafe specialty và lối tản bộ kết nối trực tiếp Phố đi bộ Nguyễn Huệ.',
+  },
+  {
+    id: 2,
+    title: '2. Bến Cầu Ba Son',
+    address: 'Khu phức hợp Ba Son, Tôn Đức Thắng, Quận 1',
+    badge: 'Kết nối Metro số 1',
+    image: '/images/asset_f96cbb30.webp',
+    imageAlt: 'Ga tàu thủy Ba Son',
+    subtitle: 'Khu trung tâm • Quận 1',
+    name: 'Bến Tàu Thủy Ba Son',
+    description:
+      'Nằm cạnh khu đô thị Vinhomes Golden River, kết nối trực tiếp với tuyến Metro số 1 Bến Thành - Suối Tiên.',
+  },
+  {
+    id: 3,
+    title: '3. Bến Bình An',
+    address: 'Đường số 21, Phường Bình An, TP. Thủ Đức',
+    badge: 'View Landmark 81',
+    image: '/images/asset_e38850f3.webp',
+    imageAlt: 'Ga tàu thủy Bình An',
+    subtitle: 'Cửa ngõ Đông Sài Gòn • TP Thủ Đức',
+    name: 'Bến Tàu Thủy Bình An',
+    description:
+      'Góc nhìn ôm trọn sông Sài Gòn và tháp Landmark 81 sừng sững, lý tưởng để ngắm hoàng hôn và nhâm nhi cà phê ven sông.',
+  },
+  {
+    id: 4,
+    title: '4. Bến Thảo Điền',
+    address: 'Đường Nguyễn Văn Hưởng, P. Thảo Điền, TP. Thủ Đức',
+    badge: 'Khu nghệ thuật ẩm thực',
+    image: '/images/night-view.webp',
+    imageAlt: 'Ga tàu thủy Thảo Điền',
+    subtitle: 'Phố Tây • TP Thủ Đức',
+    name: 'Bến Tàu Thủy Thảo Điền',
+    description:
+      'Nơi giao thoa của văn hóa ẩm thực và nghệ thuật, mang đậm phong cách sống chậm và tinh tế của bán đảo Thảo Điền.',
+  },
+];
+
 const Home = () => {
+  const [activeStationIndex, setActiveStationIndex] = useState(0);
   const navigate = useNavigate();
-  const {
-    from,
-    setFrom,
-    to,
-    setTo,
-    date,
-    setDate,
-    handleSearch,
-    stations,
-    tripType,
-    setTripType,
-    passengers,
-    setPassengers,
-  } = useBookingSearch();
+  const { updateBooking } = useBooking();
+  const { setFrom, setTo } = useBookingSearch();
+
+  const handleQuickBook = async (fromCode: StationCode, toCode: StationCode) => {
+    const today = new Date().toISOString().split('T')[0];
+    const params = {
+      from: fromCode,
+      to: toCode,
+      date: today,
+      tripType: 'one-way' as const,
+      passengers: 1,
+    };
+
+    const trips = await searchTrips(params);
+    const trip = trips.find((t) => t.status !== 'soldout') || trips[0];
+
+    if (trip) {
+      updateBooking({
+        searchParams: params,
+        selectedTrip: trip,
+        selectedSeats: [],
+      });
+      navigate('/seats');
+    } else {
+      setFrom(fromCode);
+      setTo(toCode);
+      window.location.hash = 'dat-ve';
+    }
+  };
 
   return (
     <>
@@ -34,7 +106,7 @@ const Home = () => {
           </div>
 
           <div className="relative z-10 mx-auto w-full max-w-7xl px-5 py-16 lg:px-10 lg:py-24">
-            <div className="max-w-2xl space-y-6 text-left">
+            <div className="animate-fade-in-up max-w-2xl space-y-6 text-left">
               <div className="bg-surface-container-lowest/15 inline-flex items-center gap-3 rounded-full border border-white/20 px-3 py-1.5 backdrop-blur-md">
                 <span className="bg-secondary-fixed h-2 w-2 animate-pulse rounded-full"></span>
                 <span className="text-secondary-fixed text-xs font-semibold tracking-[0.2em] uppercase">
@@ -71,8 +143,9 @@ const Home = () => {
         </section>
 
         <div
-          className="relative z-20 mx-auto -mt-16 mb-16 max-w-5xl px-4 sm:px-6 lg:-mt-24"
+          className="animate-fade-in-up relative z-20 mx-auto -mt-16 mb-16 max-w-5xl px-4 sm:px-6 lg:-mt-24"
           id="dat-ve"
+          style={{ animationDelay: '0.2s' }}
         >
           <BookingSearchWidget />
 
@@ -126,7 +199,10 @@ const Home = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <div className="bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ animationDelay: '0.1s' }}
+              >
                 <div className="bg-secondary-fixed/50 text-secondary mb-6 flex h-14 w-14 items-center justify-center rounded-xl">
                   <span className="material-symbols-outlined text-[30px]">commute</span>
                 </div>
@@ -143,7 +219,10 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ animationDelay: '0.2s' }}
+              >
                 <div className="bg-tertiary-fixed text-on-tertiary-container mb-6 flex h-14 w-14 items-center justify-center rounded-xl">
                   <span className="material-symbols-outlined text-[30px]">panorama</span>
                 </div>
@@ -160,7 +239,10 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ animationDelay: '0.3s' }}
+              >
                 <div className="bg-primary-fixed text-primary mb-6 flex h-14 w-14 items-center justify-center rounded-xl">
                   <span className="material-symbols-outlined text-[30px]">shield_with_heart</span>
                 </div>
@@ -197,7 +279,10 @@ const Home = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl"
+                style={{ animationDelay: '0.1s' }}
+              >
                 <div className="relative h-60 overflow-hidden">
                   <img
                     alt="Toàn cảnh sông Sài Gòn và bán đảo Thảo Điền rợp bóng mát ven sông"
@@ -229,11 +314,7 @@ const Home = () => {
                     <span className="text-outline">Tần suất: 30 phút / chuyến</span>
                     <button
                       type="button"
-                      onClick={() => {
-                        setFrom('BD');
-                        setTo('TD');
-                        window.location.hash = 'dat-ve';
-                      }}
+                      onClick={() => handleQuickBook('BD', 'TD')}
                       className="text-secondary hover:text-primary inline-flex cursor-pointer items-center gap-1 font-semibold"
                     >
                       Đặt vé ngay{' '}
@@ -243,7 +324,10 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-surface-container-lowest group border-secondary/40 relative flex flex-col overflow-hidden rounded-2xl border-2 shadow-[0_16px_36px_rgba(8,43,58,0.1)] transition-all duration-300">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest group border-secondary/40 relative flex flex-col overflow-hidden rounded-2xl border-2 shadow-[0_16px_36px_rgba(8,43,58,0.1)] transition-all duration-300"
+                style={{ animationDelay: '0.2s' }}
+              >
                 <div className="bg-on-tertiary-container text-on-tertiary absolute top-3 right-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase shadow-md">
                   Yêu thích nhất
                 </div>
@@ -277,11 +361,7 @@ const Home = () => {
                     <span className="text-outline">Tần suất: 20 phút / chuyến</span>
                     <button
                       type="button"
-                      onClick={() => {
-                        setFrom('BD');
-                        setTo('BA');
-                        window.location.hash = 'dat-ve';
-                      }}
+                      onClick={() => handleQuickBook('BD', 'BA')}
                       className="text-on-tertiary-container hover:text-tertiary inline-flex cursor-pointer items-center gap-1 font-bold"
                     >
                       Đặt vé ngay{' '}
@@ -291,7 +371,10 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl">
+              <div
+                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl"
+                style={{ animationDelay: '0.3s' }}
+              >
                 <div className="relative h-60 overflow-hidden">
                   <img
                     alt="Khung cảnh đêm lấp lánh trên hành trình đường sông Sài Gòn"
@@ -322,11 +405,7 @@ const Home = () => {
                     <span className="text-outline">Tần suất: 45 phút / chuyến</span>
                     <button
                       type="button"
-                      onClick={() => {
-                        setFrom('BD');
-                        setTo('LD');
-                        window.location.hash = 'dat-ve';
-                      }}
+                      onClick={() => handleQuickBook('BD', 'LD')}
                       className="text-secondary hover:text-primary inline-flex cursor-pointer items-center gap-1 font-semibold"
                     >
                       Đặt vé ngay{' '}
@@ -343,22 +422,28 @@ const Home = () => {
           <div className="mx-auto max-w-7xl px-5 lg:px-10">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
               <div className="space-y-4 lg:col-span-7">
-                <div className="border-outline-variant/30 relative overflow-hidden rounded-2xl border shadow-[0_20px_45px_rgba(8,43,58,0.12)]">
+                <div className="border-outline-variant/30 relative overflow-hidden rounded-2xl border shadow-[0_20px_45px_rgba(8,43,58,0.12)] transition-all duration-500">
                   <img
-                    alt="Ga tàu thủy Bạch Đằng Waterbus Station với sàn gỗ rộng mở nhìn ra bến cảng trung tâm Sài Gòn"
-                    className="h-[420px] w-full object-cover sm:h-[480px]"
-                    src="/images/asset_7fa6197d.webp"
+                    alt={STATIONS_DATA[activeStationIndex].imageAlt}
+                    className="animate-fade-in h-[420px] w-full object-cover sm:h-[480px]"
+                    key={STATIONS_DATA[activeStationIndex].image}
+                    src={STATIONS_DATA[activeStationIndex].image}
                   />
                   <div className="from-primary/80 via-primary/40 text-surface absolute inset-x-0 bottom-0 bg-gradient-to-t to-transparent p-6">
-                    <span className="text-secondary-fixed mb-1 block text-xs font-semibold tracking-widest uppercase">
-                      Ga Trung Tâm • Quận 1
+                    <span className="animate-fade-in-up text-secondary-fixed mb-1 block text-xs font-semibold tracking-widest uppercase">
+                      {STATIONS_DATA[activeStationIndex].subtitle}
                     </span>
-                    <h4 className="font-headline-sm text-surface text-xl sm:text-2xl">
-                      Bến Tàu Thủy Bạch Đằng
+                    <h4
+                      className="animate-fade-in-up font-headline-sm text-surface text-xl sm:text-2xl"
+                      style={{ animationDelay: '0.1s' }}
+                    >
+                      {STATIONS_DATA[activeStationIndex].name}
                     </h4>
-                    <p className="text-surface-container-high/90 mt-1 text-xs sm:text-sm">
-                      Sàn gỗ ngắm cảnh ngoài trời, phòng vé số hóa, cafe specialty và lối tản bộ kết
-                      nối trực tiếp Phố đi bộ Nguyễn Huệ.
+                    <p
+                      className="animate-fade-in-up text-surface-container-high/90 mt-1 text-xs sm:text-sm"
+                      style={{ animationDelay: '0.2s' }}
+                    >
+                      {STATIONS_DATA[activeStationIndex].description}
                     </p>
                   </div>
                 </div>
@@ -401,64 +486,47 @@ const Home = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="bg-surface-container-lowest border-secondary flex items-center justify-between rounded-xl border-l-4 p-4 shadow-sm">
-                    <div>
-                      <h4 className="font-title-md text-primary text-sm font-bold">
-                        1. Bến Ga Bạch Đằng
-                      </h4>
-                      <p className="text-outline text-xs">
-                        Số 10B Tôn Đức Thắng, P. Bến Nghé, Quận 1
-                      </p>
-                    </div>
-                    <span className="bg-secondary-container text-on-secondary-container rounded px-2.5 py-1 text-[11px] font-semibold">
-                      Ga Trung Tâm
-                    </span>
-                  </div>
-
-                  <div className="bg-surface-container-lowest border-outline-variant/20 hover:border-secondary/40 flex items-center justify-between rounded-xl border p-4 transition-colors">
-                    <div>
-                      <h4 className="font-title-md text-primary text-sm font-semibold">
-                        2. Bến Cầu Ba Son
-                      </h4>
-                      <p className="text-outline text-xs">
-                        Khu phức hợp Ba Son, Tôn Đức Thắng, Quận 1
-                      </p>
-                    </div>
-                    <span className="text-outline text-xs">Kết nối Metro số 1</span>
-                  </div>
-
-                  <div className="bg-surface-container-lowest border-outline-variant/20 hover:border-secondary/40 flex items-center justify-between rounded-xl border p-4 transition-colors">
-                    <div>
-                      <h4 className="font-title-md text-primary text-sm font-semibold">
-                        3. Bến Bình An
-                      </h4>
-                      <p className="text-outline text-xs">
-                        Đường số 21, Phường Bình An, TP. Thủ Đức
-                      </p>
-                    </div>
-                    <span className="text-outline text-xs">View Landmark 81</span>
-                  </div>
-
-                  <div className="bg-surface-container-lowest border-outline-variant/20 hover:border-secondary/40 flex items-center justify-between rounded-xl border p-4 transition-colors">
-                    <div>
-                      <h4 className="font-title-md text-primary text-sm font-semibold">
-                        4. Bến Thảo Điền
-                      </h4>
-                      <p className="text-outline text-xs">
-                        Đường Nguyễn Văn Hưởng, P. Thảo Điền, TP. Thủ Đức
-                      </p>
-                    </div>
-                    <span className="text-outline text-xs">Khu nghệ thuật ẩm thực</span>
-                  </div>
+                  {STATIONS_DATA.map((station, index) => {
+                    const isActive = index === activeStationIndex;
+                    return (
+                      <div
+                        key={station.id}
+                        onClick={() => setActiveStationIndex(index)}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl p-4 transition-colors duration-300 ${
+                          isActive
+                            ? 'bg-surface-container-lowest border-secondary border-l-4 shadow-sm'
+                            : 'bg-surface-container-lowest border-outline-variant/20 hover:border-secondary/40 border'
+                        }`}
+                      >
+                        <div>
+                          <h4
+                            className={`font-title-md text-sm ${isActive ? 'text-primary font-bold' : 'text-primary font-semibold'}`}
+                          >
+                            {station.title}
+                          </h4>
+                          <p className="text-outline mt-1 text-xs">{station.address}</p>
+                        </div>
+                        <span
+                          className={
+                            isActive
+                              ? 'bg-secondary-container text-on-secondary-container rounded px-2.5 py-1 text-[11px] font-semibold'
+                              : 'text-outline text-xs'
+                          }
+                        >
+                          {station.badge}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div>
-                  <a
+                  <Link
+                    to="/live"
                     className="text-secondary hover:text-primary inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-                    href="#so-do-ben"
                   >
                     <span className="">Xem bản đồ chi tiết và hướng dẫn di chuyển</span>
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -145,14 +145,19 @@ const BookingTripSelection = () => {
                 )}
 
                 {!loading &&
-                  trips.map((trip) => (
-                    <TripCard
+                  trips.map((trip, idx) => (
+                    <div
                       key={trip.id}
-                      trip={trip}
-                      originLabel={origin?.shortName ?? trip.from}
-                      destLabel={dest?.shortName ?? trip.to}
-                      onSelect={() => selectTrip(trip)}
-                    />
+                      className="animate-fade-in-up"
+                      style={{ animationDelay: `${idx * 0.1}s` }}
+                    >
+                      <TripCard
+                        trip={trip}
+                        originLabel={origin?.shortName ?? trip.from}
+                        destLabel={dest?.shortName ?? trip.to}
+                        onSelect={() => selectTrip(trip)}
+                      />
+                    </div>
                   ))}
 
                 <div className="p-space-md bg-surface-container-low gap-space-sm text-on-surface-variant flex items-start rounded-xl">

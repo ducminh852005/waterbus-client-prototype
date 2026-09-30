@@ -23,29 +23,33 @@ export default function Header() {
         </Link>
         <nav className="hidden items-center gap-8 text-[15px] lg:flex">
           <Link
-            className="font-body-md text-surface hover:text-secondary-fixed py-1 font-semibold transition-colors"
+            className="group font-body-md text-surface hover:text-secondary-fixed relative py-1 font-semibold transition-colors"
             to="/"
           >
             Trang chủ
+            <span className="bg-secondary-fixed absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <a
-            className="font-body-md text-surface-variant hover:text-surface py-1 font-medium transition-colors"
+            className="group font-body-md text-surface-variant hover:text-surface relative py-1 font-medium transition-colors"
             href="/#lich-trinh"
           >
             Lịch trình
+            <span className="bg-surface absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a
-            className="font-body-md text-surface-variant hover:text-surface py-1 font-medium transition-colors"
+            className="group font-body-md text-surface-variant hover:text-surface relative py-1 font-medium transition-colors"
             href="/#ben-tau"
           >
             Bến tàu
+            <span className="bg-surface absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </a>
           <Link
-            className="font-body-md text-secondary-fixed hover:text-secondary flex items-center gap-1 py-1 font-medium transition-colors"
+            className="group font-body-md text-secondary-fixed hover:text-secondary relative flex items-center gap-1 py-1 font-medium transition-colors"
             to="/live"
           >
             <span className="bg-secondary h-1.5 w-1.5 animate-pulse rounded-full"></span>
             Tàu trực tuyến
+            <span className="bg-secondary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </nav>
         <div className="flex items-center gap-4 sm:gap-6">

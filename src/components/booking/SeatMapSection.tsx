@@ -10,7 +10,7 @@ type SeatMapSectionProps = {
 export default function SeatMapSection({ section, selectedIds, onToggle }: SeatMapSectionProps) {
   if (section.id === 'vip') {
     return (
-      <div className="mb-space-lg">
+      <div className="animate-fade-in mb-space-lg">
         <div className="pb-space-xs mb-space-sm flex items-center justify-between">
           <div className="gap-space-xs flex items-center">
             <span className="bg-on-tertiary-container h-2 w-2 rounded-full"></span>
@@ -59,7 +59,7 @@ export default function SeatMapSection({ section, selectedIds, onToggle }: SeatM
 
   if (section.id === 'standard') {
     return (
-      <div className="mb-space-lg">
+      <div className="animate-fade-in mb-space-lg">
         <div className="pb-space-xs mb-space-sm flex items-center justify-between">
           <div className="gap-space-xs flex items-center">
             <span className="bg-secondary h-2 w-2 rounded-full"></span>
@@ -112,7 +112,7 @@ export default function SeatMapSection({ section, selectedIds, onToggle }: SeatM
   }
 
   return (
-    <div className="pt-space-md mt-space-md">
+    <div className="animate-fade-in pt-space-md mt-space-md">
       <div className="pb-space-xs mb-space-sm flex items-center justify-between">
         <div className="gap-space-xs flex items-center">
           <span className="bg-secondary-fixed-dim h-2 w-2 rounded-full"></span>

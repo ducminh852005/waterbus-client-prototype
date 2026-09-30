@@ -12,7 +12,7 @@ export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps
   if (selected) {
     return (
       <button
-        className="bg-on-tertiary-container text-on-primary font-label-md text-label-md ring-on-tertiary-container flex h-11 flex-col items-center justify-center rounded-lg font-bold shadow-md ring-2 ring-offset-2"
+        className="bg-on-tertiary-container text-on-primary font-label-md text-label-md ring-on-tertiary-container flex h-11 flex-col items-center justify-center rounded-lg font-bold shadow-md ring-2 ring-offset-2 transition-transform duration-200 hover:scale-105"
         type="button"
         onClick={onToggle}
       >
@@ -49,7 +49,7 @@ export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps
   if (seat.category === 'vip') {
     return (
       <button
-        className="seat-btn bg-surface-container-low hover:bg-secondary-fixed/40 text-primary text-label-sm flex h-11 flex-col items-center justify-center rounded-lg font-semibold shadow-sm transition-all"
+        className="seat-btn bg-surface-container-low hover:bg-secondary-fixed/40 text-primary text-label-sm flex h-11 flex-col items-center justify-center rounded-lg font-semibold shadow-sm transition-all duration-200 hover:scale-105"
         type="button"
         onClick={onToggle}
       >
@@ -62,7 +62,7 @@ export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps
   if (seat.category === 'deck') {
     return (
       <button
-        className="seat-btn bg-surface-container-high hover:bg-secondary-container text-primary font-label-md text-label-md flex h-11 flex-col items-center justify-center rounded-lg shadow-sm transition-all"
+        className="seat-btn bg-surface-container-high hover:bg-secondary-container text-primary font-label-md text-label-md flex h-11 flex-col items-center justify-center rounded-lg shadow-sm transition-all duration-200 hover:scale-105"
         type="button"
         onClick={onToggle}
       >
@@ -74,7 +74,7 @@ export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps
 
   return (
     <button
-      className="seat-btn bg-surface-container-low hover:bg-secondary-fixed/40 text-primary font-label-md text-label-md flex h-10 items-center justify-center rounded-lg shadow-sm transition-all"
+      className="seat-btn bg-surface-container-low hover:bg-secondary-fixed/40 text-primary font-label-md text-label-md flex h-10 items-center justify-center rounded-lg shadow-sm transition-all duration-200 hover:scale-105"
       type="button"
       onClick={onToggle}
     >

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { formatVnd } from '../../utils/pricing';
 
 type DateStripItem = {
@@ -14,15 +15,56 @@ type DateStripProps = {
 };
 
 export default function DateStrip({ dates, selectedDate, onSelect }: DateStripProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const selectedBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (selectedBtnRef.current && containerRef.current) {
+      const container = containerRef.current;
+      const btn = selectedBtnRef.current;
+
+      const containerCenter = container.clientWidth / 2;
+      // We subtract container.offsetLeft to get the relative position
+      const btnCenter = btn.offsetLeft - container.offsetLeft + btn.clientWidth / 2;
+
+      const targetScrollLeft = btnCenter - containerCenter;
+
+      const startScrollLeft = container.scrollLeft;
+      const distance = targetScrollLeft - startScrollLeft;
+      const duration = 600; // 600ms for a slower, graceful slide
+      let startTime: number | null = null;
+
+      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        container.scrollLeft = startScrollLeft + distance * easeOutQuart(progress);
+
+        if (progress < 1) {
+          requestAnimationFrame(animation);
+        }
+      };
+
+      requestAnimationFrame(animation);
+    }
+  }, [selectedDate]);
+
   return (
     <div className="bg-surface py-space-sm w-full">
       <div className="px-gutter mx-auto max-w-7xl">
-        <div className="gap-space-xs no-scrollbar flex items-center justify-between overflow-x-auto pt-3 pb-1">
+        <div
+          ref={containerRef}
+          className="gap-space-xs no-scrollbar relative flex items-center justify-between overflow-x-auto pt-3 pb-1"
+        >
           {dates.map((item) => {
             const isSelected = item.date === selectedDate;
             return (
               <button
                 key={item.date}
+                ref={isSelected ? selectedBtnRef : null}
                 type="button"
                 onClick={() => onSelect(item.date)}
                 className={

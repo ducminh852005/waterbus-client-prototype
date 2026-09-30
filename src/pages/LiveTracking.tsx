@@ -1,4 +1,5 @@
 import React from 'react';
+import RouteMap from '../components/RouteMap';
 
 const LIVE_TRIPS = [
   {
@@ -74,6 +75,8 @@ export default function LiveTracking() {
               </button>
             </div>
           </div>
+
+          <RouteMap />
 
           <div className="grid grid-cols-1 gap-4">
             {LIVE_TRIPS.map((trip) => (

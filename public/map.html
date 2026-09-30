@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Đồ Tuyến Tàu - Sông Xanh Water Express</title>
+  <style>
+    :root {
+      --primary: #082b3a;
+      --secondary: #0d8368;
+      --accent: #e26d38;
+      --bg: #f8fafc;
+      --text: #334155;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background-color: var(--primary);
+      color: white;
+      width: 100%;
+      padding: 1.5rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .map-title {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .map-subtitle {
+      color: #64748b;
+      margin-bottom: 3rem;
+    }
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 2rem;
+    }
+    svg {
+      min-width: 800px;
+      height: 300px;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    /* Metro Map Styles */
+    .route-line {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .station-node {
+      fill: white;
+      stroke: var(--primary);
+      stroke-width: 5;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .station-node:hover {
+      fill: var(--accent);
+      stroke: white;
+      r: 14;
+    }
+    .station-node-transfer {
+      fill: white;
+      stroke: var(--accent);
+      stroke-width: 5;
+    }
+    .station-name {
+      font-size: 16px;
+      font-weight: 700;
+      fill: var(--primary);
+      cursor: pointer;
+    }
+    .station-area {
+      font-size: 12px;
+      fill: #64748b;
+    }
+    .water-bg {
+      fill: #e0f2fe;
+      rx: 20;
+    }
+    
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background-color: var(--secondary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: all 0.2s;
+      margin-top: 2rem;
+    }
+    .back-btn:hover {
+      background-color: #0a6953;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 131, 104, 0.3);
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .legend-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 4px solid var(--primary);
+      background: white;
+    }
+    .legend-dot.transfer {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SÔNG XANH WATER EXPRESS</h1>
+  </header>
+  
+  <div class="container">
+    <h2 class="map-title">Bản Đồ Tuyến Đường Sông</h2>
+    <p class="map-subtitle">Tuyến Saigon River (Bạch Đằng - Linh Đông)</p>
+    
+    <div class="map-wrapper">
+      <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- Water Background decoration -->
+        <rect x="50" y="80" width="800" height="140" class="water-bg" />
+        
+        <!-- The Route Line -->
+        <!-- Start at Bạch Đằng (120, 150), Ba Son (270, 150), Bình An (440, 100), Thảo Điền (610, 100), Linh Đông (780, 150) -->
+        <path d="M 120 150 L 320 150 L 370 100 L 650 100 L 700 150 L 780 150" class="route-line" />
+        
+        <!-- STATIONS -->
+        <!-- 1. Bến Bạch Đằng -->
+        <circle cx="120" cy="150" r="10" class="station-node station-node-transfer" />
+        <text x="120" y="185" text-anchor="middle" class="station-name">Bạch Đằng</text>
+        <text x="120" y="205" text-anchor="middle" class="station-area">Quận 1</text>
+        <rect x="80" y="115" width="80" height="20" rx="4" fill="#e26d38" opacity="0.1" />
+        <text x="120" y="129" text-anchor="middle" fill="#e26d38" font-size="10" font-weight="bold">GA TRUNG TÂM</text>
+
+        <!-- 2. Bến Ba Son -->
+        <circle cx="280" cy="150" r="10" class="station-node" />
+        <text x="280" y="185" text-anchor="middle" class="station-name">Ba Son</text>
+        <text x="280" y="205" text-anchor="middle" class="station-area">Quận 1</text>
+        <rect x="245" y="115" width="70" height="20" rx="4" fill="#0d8368" opacity="0.1" />
+        <text x="280" y="129" text-anchor="middle" fill="#0d8368" font-size="10" font-weight="bold">METRO 1</text>
+
+        <!-- 3. Bến Bình An -->
+        <circle cx="420" cy="100" r="10" class="station-node" />
+        <text x="420" y="70" text-anchor="middle" class="station-name">Bình An</text>
+        <text x="420" y="50" text-anchor="middle" class="station-area">TP. Thủ Đức</text>
+
+        <!-- 4. Bến Thảo Điền -->
+        <circle cx="580" cy="100" r="10" class="station-node" />
+        <text x="580" y="70" text-anchor="middle" class="station-name">Thảo Điền</text>
+        <text x="580" y="50" text-anchor="middle" class="station-area">TP. Thủ Đức</text>
+
+        <!-- 5. Bến Linh Đông -->
+        <circle cx="780" cy="150" r="10" class="station-node" />
+        <text x="780" y="185" text-anchor="middle" class="station-name">Linh Đông</text>
+        <text x="780" y="205" text-anchor="middle" class="station-area">TP. Thủ Đức</text>
+        <rect x="740" y="115" width="80" height="20" rx="4" fill="#334155" opacity="0.1" />
+        <text x="780" y="129" text-anchor="middle" fill="#334155" font-size="10" font-weight="bold">GA CUỐI</text>
+
+      </svg>
+    </div>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot"></div>
+        <span>Bến tiêu chuẩn</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot transfer"></div>
+        <span>Ga trung tâm / Điểm nối chuyến</span>
+      </div>
+    </div>
+
+    <a href="/" class="back-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Quay lại trang chủ
+    </a>
+  </div>
+</body>
+</html>

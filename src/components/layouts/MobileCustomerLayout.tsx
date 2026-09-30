@@ -4,10 +4,12 @@ import { Home, Ticket, UserCircle } from 'lucide-react';
 import { BookingProvider } from '../../context/BookingContext';
 import Header from '../Header';
 import Footer from '../Footer';
+import ScrollToTop from '../ScrollToTop';
 
 export default function MobileCustomerLayout() {
   return (
     <BookingProvider>
+      <ScrollToTop />
       <div className="flex min-h-screen flex-col bg-slate-50 pb-20 md:pb-0">
         {/* Desktop Header */}
         <div className="hidden md:block">
