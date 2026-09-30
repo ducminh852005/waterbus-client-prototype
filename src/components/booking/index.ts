@@ -10,3 +10,4 @@ export { default as VoucherInput } from './VoucherInput';
 export { default as PaymentSummaryCard } from './PaymentSummaryCard';
 export { default as TicketCard } from './TicketCard';
 export { default as QrCodeMock } from './QrCodeMock';
+export { default as BookingSearchWidget } from './BookingSearchWidget';

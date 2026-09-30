@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useBookingSearch } from '../hooks/useBookingSearch';
 import type { StationCode } from '../types';
+import { BookingSearchWidget } from '../components/booking';
 const Home = () => {
   const navigate = useNavigate();
   const {
@@ -70,227 +71,43 @@ const Home = () => {
         </section>
 
         <div
-          className="relative z-20 mx-auto -mt-16 mb-16 max-w-6xl px-4 sm:px-6 lg:-mt-24"
+          className="relative z-20 mx-auto -mt-16 mb-16 max-w-5xl px-4 sm:px-6 lg:-mt-24"
           id="dat-ve"
         >
-          <div className="bg-surface-container-lowest border-outline-variant/20 rounded-2xl border p-6 shadow-[0_20px_50px_rgba(8,43,58,0.12)] backdrop-blur-md lg:p-8">
-            <div className="border-surface-container-highest flex flex-wrap items-center justify-between gap-4 border-b pb-6">
-              <div className="bg-surface-container-low inline-flex rounded-xl p-1">
-                <button
-                  type="button"
-                  onClick={() => setTripType('one-way')}
-                  className={`rounded-lg px-5 py-2 text-xs transition-all sm:text-sm ${tripType === 'one-way' ? 'bg-surface-container-lowest text-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface font-medium'}`}
-                >
-                  Một chiều
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTripType('round-trip')}
-                  className={`rounded-lg px-5 py-2 text-xs transition-all sm:text-sm ${tripType === 'round-trip' ? 'bg-surface-container-lowest text-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface font-medium'}`}
-                >
-                  Khứ hồi
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTripType('charter')}
-                  className={`rounded-lg px-5 py-2 text-xs transition-all sm:text-sm ${tripType === 'charter' ? 'bg-surface-container-lowest text-primary font-semibold shadow-sm' : 'text-on-surface-variant hover:text-on-surface font-medium'}`}
-                >
-                  Thuê nguyên tàu (Charter)
-                </button>
-              </div>
-              <div className="text-secondary flex items-center gap-2 text-xs font-medium sm:text-sm">
-                <span className="material-symbols-outlined text-secondary text-[18px]">
-                  verified_user
-                </span>
-                <span className="">Đặt chỗ trực tuyến &amp; Nhận vé điện tử tức thì</span>
-              </div>
-            </div>
+          <BookingSearchWidget />
 
-            {tripType === 'charter' ? (
-              <form
-                className="grid grid-cols-1 items-end gap-4 pt-6 sm:grid-cols-3 lg:gap-5"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert(
-                    'Yêu cầu thuê tàu của bạn đã được tiếp nhận. Đội ngũ Sông Xanh sẽ liên hệ với bạn trong 30 phút!'
-                  );
-                }}
-              >
-                <div className="col-span-1">
-                  <label className="text-outline mb-1.5 block text-xs font-semibold tracking-wider uppercase">
-                    Tên liên hệ
-                  </label>
-                  <input
-                    className="bg-surface-container-low border-outline-variant/30 focus:border-secondary h-[46px] w-full rounded-xl border px-4 text-sm focus:outline-none"
-                    placeholder="Vd: Nguyễn Văn A"
-                    required
-                    type="text"
-                  />
-                </div>
-                <div className="col-span-1">
-                  <label className="text-outline mb-1.5 block text-xs font-semibold tracking-wider uppercase">
-                    Số điện thoại
-                  </label>
-                  <input
-                    className="bg-surface-container-low border-outline-variant/30 focus:border-secondary h-[46px] w-full rounded-xl border px-4 text-sm focus:outline-none"
-                    placeholder="0901 234 567"
-                    required
-                    type="tel"
-                  />
-                </div>
-                <div className="col-span-1">
-                  <label className="text-outline mb-1.5 block text-xs font-semibold tracking-wider uppercase">
-                    Quy mô (Số khách)
-                  </label>
-                  <select className="bg-surface-container-low border-outline-variant/30 focus:border-secondary text-on-surface h-[46px] w-full cursor-pointer rounded-xl border px-4 text-sm focus:outline-none">
-                    <option>Dưới 20 khách (Cano)</option>
-                    <option>20 - 50 khách (Du thuyền nhỏ)</option>
-                    <option>Trên 50 khách (Catamaran lớn)</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-3">
-                  <button
-                    className="bg-primary hover:bg-secondary text-on-primary inline-flex h-[46px] w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold tracking-wider uppercase shadow-md transition-all"
-                    type="submit"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">send</span>
-                    <span className="">Nhận Báo Giá & Tư Vấn Ngay</span>
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <form
-                className="grid grid-cols-1 items-end gap-3 pt-6 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4"
-                onSubmit={handleSearch}
-              >
-                <div className="lg:col-span-3">
-                  <label className="text-on-surface-variant mb-1.5 block text-xs font-medium tracking-wide uppercase">
-                    Bến xuất phát
-                  </label>
-                  <div className="bg-surface-container-lowest border-outline-variant/50 hover:border-secondary focus-within:border-secondary focus-within:ring-secondary/20 relative flex cursor-pointer items-center rounded-xl border px-4 py-3.5 transition-all focus-within:ring-2">
-                    <span className="material-symbols-outlined text-secondary mr-3 text-[22px]">
-                      trip_origin
-                    </span>
-                    <select
-                      className="text-on-surface w-full cursor-pointer bg-transparent text-base font-semibold focus:outline-none"
-                      value={from}
-                      onChange={(e) => setFrom(e.target.value as StationCode)}
-                    >
-                      {stations.map((station) => (
-                        <option key={`from-${station.code}`} value={station.code}>
-                          {station.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-3">
-                  <label className="text-on-surface-variant mb-1.5 block text-xs font-medium tracking-wide uppercase">
-                    Bến đến
-                  </label>
-                  <div className="bg-surface-container-lowest border-outline-variant/50 hover:border-secondary focus-within:border-secondary focus-within:ring-secondary/20 relative flex cursor-pointer items-center rounded-xl border px-4 py-3.5 transition-all focus-within:ring-2">
-                    <span className="material-symbols-outlined text-on-tertiary-container mr-3 text-[22px]">
-                      location_on
-                    </span>
-                    <select
-                      className="text-on-surface w-full cursor-pointer bg-transparent text-base font-semibold focus:outline-none"
-                      value={to}
-                      onChange={(e) => setTo(e.target.value as StationCode)}
-                    >
-                      {stations.map((station) => (
-                        <option key={`to-${station.code}`} value={station.code}>
-                          {station.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-3">
-                  <label className="text-on-surface-variant mb-1.5 block text-xs font-medium tracking-wide uppercase">
-                    Khởi hành
-                  </label>
-                  <div className="bg-surface-container-lowest border-outline-variant/50 hover:border-secondary focus-within:border-secondary focus-within:ring-secondary/20 relative flex items-center rounded-xl border px-4 py-3.5 transition-all focus-within:ring-2">
-                    <span className="material-symbols-outlined text-outline mr-3 text-[22px]">
-                      calendar_month
-                    </span>
-                    <input
-                      className="text-on-surface w-full cursor-pointer bg-transparent text-base font-semibold focus:outline-none"
-                      type="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="lg:col-span-3">
-                  <label className="text-on-surface-variant mb-1.5 block text-xs font-medium tracking-wide uppercase">
-                    Hành khách
-                  </label>
-                  <div className="bg-surface-container-lowest border-outline-variant/50 hover:border-secondary focus-within:border-secondary focus-within:ring-secondary/20 relative flex cursor-pointer items-center rounded-xl border px-4 py-3.5 transition-all focus-within:ring-2">
-                    <span className="material-symbols-outlined text-outline mr-3 text-[22px]">
-                      group
-                    </span>
-                    <select
-                      className="text-on-surface w-full cursor-pointer bg-transparent text-base font-semibold focus:outline-none"
-                      value={passengers}
-                      onChange={(e) => setPassengers(Number(e.target.value))}
-                    >
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                        <option key={`p-${num}`} value={num}>
-                          {num} Người
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="pt-2 sm:col-span-2 lg:col-span-12">
-                  <button
-                    className="bg-primary hover:bg-secondary text-on-primary inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold tracking-wider uppercase shadow-[0_8px_20px_rgba(8,43,58,0.2)] transition-all hover:-translate-y-0.5"
-                    type="submit"
-                  >
-                    <span className="material-symbols-outlined text-[24px]">search</span>
-                    <span className="">Tìm Chuyến Tàu Ngay</span>
-                  </button>
-                </div>
-              </form>
-            )}
-
-            <div className="border-surface-container-highest/60 text-outline mt-4 flex flex-wrap items-center gap-2 border-t pt-4 text-xs">
-              <span className="text-on-surface-variant font-medium">Tuyến gợi ý hôm nay:</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setFrom('BD');
-                  setTo('TD');
-                }}
-                className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
-              >
-                Bạch Đằng ⇄ Thảo Điền (15.000đ)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFrom('BD');
-                  setTo('BA');
-                }}
-                className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
-              >
-                Bạch Đằng ⇄ Bình An (15.000đ)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setFrom('BD');
-                  setTo('BA');
-                }}
-                className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
-              >
-                Chuyến Ngắm Hoàng Hôn Sunset Express (17:30)
-              </button>
-            </div>
+          <div className="bg-surface-container-lowest/90 border-outline-variant/20 text-outline mx-auto mt-4 flex flex-wrap items-center gap-2 rounded-xl border px-6 py-3 text-xs shadow-sm backdrop-blur-md">
+            <span className="text-on-surface-variant font-medium">Tuyến gợi ý hôm nay:</span>
+            <button
+              type="button"
+              onClick={() => {
+                setFrom('BD');
+                setTo('TD');
+              }}
+              className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
+            >
+              Bạch Đằng ⇄ Thảo Điền (15.000đ)
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setFrom('BD');
+                setTo('BA');
+              }}
+              className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
+            >
+              Bạch Đằng ⇄ Bình An (15.000đ)
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setFrom('BD');
+                setTo('BA');
+              }}
+              className="bg-surface-container text-secondary hover:bg-secondary-container rounded-full px-2.5 py-1 transition-colors"
+            >
+              Chuyến Ngắm Hoàng Hôn Sunset Express (17:30)
+            </button>
           </div>
         </div>
 
