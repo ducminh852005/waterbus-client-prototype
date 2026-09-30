@@ -5,12 +5,16 @@ erDiagram
         string name
         int capacity
         string ship_type
+        string description
+        string amenities_json
     }
     SEATS {
         int seat_id PK
         int ship_id FK
         string seat_number
         string deck
+        string seat_category
+        int display_order
     }
     SHIP_TELEMETRIES {
         bigint telemetry_id PK
@@ -28,11 +32,13 @@ erDiagram
     }
     TRIP_INSTANCES {
         bigint trip_instance_id PK
+        string trip_code
         int schedule_id FK
         int actual_ship_id FK
         date trip_date
         timestamp actual_departure
         string status
+        string display_tag
     }
 
     SHIPS ||--o{ SEATS : "contains"

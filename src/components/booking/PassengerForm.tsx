@@ -1,12 +1,18 @@
-import type { Passenger, PassengerType } from '../../types';
+import type { Passenger } from '../../types';
 
 type PassengerFormProps = {
   index: number;
   passenger: Passenger;
   onChange: (patch: Partial<Passenger>) => void;
+  onCopyFromContact?: () => void;
 };
 
-export default function PassengerForm({ index, passenger, onChange }: PassengerFormProps) {
+export default function PassengerForm({
+  index,
+  passenger,
+  onChange,
+  onCopyFromContact,
+}: PassengerFormProps) {
   return (
     <div className="bg-surface-container-low p-space-md rounded-xl">
       <div className="mb-space-sm pb-space-xs flex items-center justify-between border-b border-slate-200">
@@ -18,20 +24,27 @@ export default function PassengerForm({ index, passenger, onChange }: PassengerF
             Hành khách {index + 1}
           </span>
         </div>
+        {onCopyFromContact && (
+          <button
+            type="button"
+            className="text-secondary text-label-sm font-medium hover:underline"
+            onClick={onCopyFromContact}
+          >
+            Sao chép từ người đặt vé
+          </button>
+        )}
       </div>
       <div className="pt-2">
         <label className="font-label-sm text-label-sm text-on-surface-variant mb-space-xs block tracking-wider uppercase">
-          Loại vé (Độ tuổi) <span className="text-on-tertiary-container">*</span>
+          Họ và tên hành khách <span className="text-on-tertiary-container">*</span>
         </label>
-        <select
-          className="bg-surface-container-lowest text-primary font-body-md text-body-md px-space-md py-space-sm focus:ring-secondary w-full appearance-none rounded-lg shadow-sm focus:ring-2 focus:outline-none md:w-1/2"
-          value={passenger.type}
-          onChange={(e) => onChange({ type: e.target.value as PassengerType })}
-        >
-          <option value="adult">Người lớn (12 - 59 tuổi)</option>
-          <option value="child">Trẻ em (Dưới 12 tuổi)</option>
-          <option value="senior">Người cao tuổi (Từ 60 tuổi)</option>
-        </select>
+        <input
+          type="text"
+          placeholder="Nhập tên hành khách"
+          className="bg-surface-container-lowest text-primary font-body-md text-body-md px-space-md py-space-sm focus:ring-secondary w-full rounded-lg shadow-sm focus:ring-2 focus:outline-none md:w-1/2"
+          value={passenger.fullName}
+          onChange={(e) => onChange({ fullName: e.target.value })}
+        />
       </div>
     </div>
   );

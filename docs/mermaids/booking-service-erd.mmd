@@ -5,6 +5,9 @@ erDiagram
         uuid user_id REF
         string booking_code
         string customer_phone
+        string customer_email
+        string special_requests_json
+        string special_request_note
         decimal final_amount
         string status
         timestamp expires_at
@@ -14,7 +17,9 @@ erDiagram
         bigint booking_id FK
         bigint reservation_id REF
         bigint trip_instance_id REF
+        int seat_id REF
         string seat_number
+        string passenger_name
         string qr_token_hash "UNIQUE"
         string status "VALID, USED, CANCELLED"
     }
@@ -28,6 +33,7 @@ erDiagram
     VOUCHERS {
         bigint voucher_id PK
         string code
+        string description
         decimal voucher_value
     }
     USER_VOUCHERS {

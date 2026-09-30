@@ -13,12 +13,12 @@ function makeSeat(
   rng: () => number,
   forcedStatus?: Seat['status']
 ): Seat {
-  let status: Seat['status'] = forcedStatus ?? 'available';
+  let status: Seat['status'] = forcedStatus ?? 'AVAILABLE';
   if (!forcedStatus) {
     const roll = rng();
-    if (roll < 0.15) status = 'booked';
+    if (roll < 0.15) status = 'BOOKED';
   }
-  return { id, category, price: PRICE_BY_CATEGORY[category], status };
+  return { id, seatNumber: id, deck: 'Main', category, price: PRICE_BY_CATEGORY[category], status };
 }
 
 function buildVipSection(rng: () => number): SeatMapSection {
@@ -26,8 +26,8 @@ function buildVipSection(rng: () => number): SeatMapSection {
   for (let r = 1; r <= 2; r++) {
     const row: Seat[] = [];
     for (let c = 1; c <= 4; c++) {
-      const id = `V${String((r - 1) * 4 + c).padStart(2, '0')}`;
-      row.push(makeSeat(id, 'vip', rng));
+      const seatNumber = `V${String((r - 1) * 4 + c).padStart(2, '0')}`;
+      row.push(makeSeat(seatNumber, 'vip', rng));
     }
     rows.push(row);
   }
@@ -39,9 +39,8 @@ function buildStandardSection(rng: () => number): SeatMapSection {
   const rows: Seat[][] = [];
   for (let r = 1; r <= 7; r++) {
     const row: Seat[] = columns.map((col) => {
-      const id = `${col}${String(r).padStart(2, '0')}`;
-      const forced = r === 1 ? 'priority' : undefined;
-      return makeSeat(id, 'standard', rng, forced as Seat['status'] | undefined);
+      const seatNumber = `${col}${String(r).padStart(2, '0')}`;
+      return makeSeat(seatNumber, 'standard', rng, undefined);
     });
     rows.push(row);
   }
@@ -56,8 +55,8 @@ function buildDeckSection(rng: () => number): SeatMapSection {
   return { id: 'deck', label: 'Khu Vực Boong Hở Phía Sau Ngắm Cảnh', rows: [row] };
 }
 
-export function generateSeatMap(tripId: string): SeatMap {
-  const rng = mulberry32(hashSeed(tripId));
+export function generateSeatMap(tripId: number): SeatMap {
+  const rng = mulberry32(hashSeed(tripId.toString()));
   return {
     tripId,
     sections: [buildVipSection(rng), buildStandardSection(rng), buildDeckSection(rng)],

@@ -47,7 +47,7 @@ export function useSeatSelection() {
   );
 
   const toggleSeat = (seat: Seat) => {
-    if (seat.status === 'booked') return;
+    if (seat.status === 'BOOKED') return;
     setSelectedSeatIds((prev) => {
       if (prev.includes(seat.id)) return prev.filter((id) => id !== seat.id);
       if (prev.length >= maxSeats) return prev;

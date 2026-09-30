@@ -1,7 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 const Register = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement actual registration logic
+    navigate('/');
+  };
+
   return (
     <>
       <Header />
@@ -169,7 +177,7 @@ const Register = () => {
                     <form
                       className="space-y-space-md"
                       id="registrationForm"
-                      onSubmit={(e) => e.preventDefault()}
+                      onSubmit={handleSubmit}
                     >
                       <div>
                         <label
@@ -347,7 +355,7 @@ const Register = () => {
                       <div className="space-y- space-xs pt-2">
                         <label className="group flex cursor-pointer items-start gap-3">
                           <input
-                            checked
+                            defaultChecked
                             className="text-secondary accent-secondary mt-1 h-4 w-4 cursor-pointer rounded focus:ring-0"
                             id="termConsent"
                             required
@@ -375,7 +383,7 @@ const Register = () => {
                         </label>
                         <label className="group flex cursor-pointer items-start gap-3">
                           <input
-                            checked
+                            defaultChecked
                             className="text-secondary accent-secondary mt-1 h-4 w-4 cursor-pointer rounded focus:ring-0"
                             id="promoConsent"
                             type="checkbox"

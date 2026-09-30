@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/BookingContext';
-import { getStationByCode } from '../mocks';
+import { getStationByCodeSync } from '../services';
 import { computeSubtotal, formatVnd } from '../utils/pricing';
 import { formatFullDate } from '../utils/date';
 import type { Trip, Seat } from '../types';
@@ -40,8 +40,8 @@ export default function BookingSummarySidebar({
     else if (nextRoute) navigate(nextRoute);
   };
 
-  const originStation = selectedTrip ? getStationByCode(selectedTrip.from) : undefined;
-  const destStation = selectedTrip ? getStationByCode(selectedTrip.to) : undefined;
+  const originStation = selectedTrip ? getStationByCodeSync(selectedTrip.from) : undefined;
+  const destStation = selectedTrip ? getStationByCodeSync(selectedTrip.to) : undefined;
   const subtotal = computeSubtotal(selectedSeats);
 
   return (

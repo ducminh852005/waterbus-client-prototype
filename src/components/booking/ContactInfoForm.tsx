@@ -76,19 +76,6 @@ export default function ContactInfoForm({ value, onChange }: ContactInfoFormProp
           </div>
         </div>
       </div>
-
-      <label className="gap-space-sm bg-surface-container-low p-space-sm flex cursor-pointer items-start rounded-lg select-none">
-        <input
-          checked={value.notifyByZaloSms}
-          onChange={(e) => onChange({ notifyByZaloSms: e.target.checked })}
-          className="text-secondary focus:ring-secondary accent-secondary mt-1 h-4 w-4 rounded"
-          type="checkbox"
-        />
-        <span className="font-body-md text-body-md text-primary">
-          Gửi thông tin vé & cập nhật lịch trình thời gian thực qua tin nhắn Zalo / SMS tự động đến
-          số điện thoại trên.
-        </span>
-      </label>
     </div>
   );
 }

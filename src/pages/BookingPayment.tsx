@@ -1,6 +1,6 @@
 import { usePayment } from '../hooks/usePayment';
 import { PaymentMethodOption, VoucherInput, PaymentSummaryCard } from '../components/booking';
-import { PAYMENT_METHODS } from '../mocks';
+import { listPaymentMethodsSync } from '../services';
 import { useBooking } from '../context/BookingContext';
 
 const BookingPayment = () => {
@@ -82,7 +82,7 @@ const BookingPayment = () => {
 
                 <fieldset className="space-y-space-sm">
                   <legend className="sr-only">Lựa chọn cổng thanh toán</legend>
-                  {PAYMENT_METHODS.map((pm) => (
+                  {listPaymentMethodsSync().map((pm) => (
                     <PaymentMethodOption
                       key={pm.id}
                       method={pm}

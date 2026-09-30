@@ -24,3 +24,25 @@ The Mobile App system uses a single Flutter codebase but renders different UIs b
 
 - **Routing & Scheduling Management:** Add/edit/delete station, route, and ship information, and create flexible daily/weekly running schedules.
 - **Analytics & Reports:** Revenue charts by day/month/route, seat occupancy rate for each trip, and staff ticket scanning history.
+
+## 6.4 Missing & Required Pages for Web Client
+
+### Customer Facing
+
+- **Tra cứu / Quản lý vé:** `/tickets/lookup` và `/bookings/:bookingCode`. Allow customers to view tickets, QR codes, and booking status using `bookingCode` and `phone/email`.
+- **Payment Lifecycle:** `/payment/callback`, `/payment/failed` (or merged into `/payment/result`). Used to handle redirects from VNPay/MoMo, verifying the payment status with BE and navigating to `/success` or error UI.
+- **Account Recovery:** `/forgot-password`, `/reset-password`
+- **Member Profile (Phase 2):** `/account`, `/account/bookings`, `/account/vouchers`.
+- **Legal & Policies:** `/terms`, `/privacy`, `/refund-policy`. Currently these are placeholder links `#`.
+
+### Admin Facing
+
+- **Admin Authentication:** `/admin/login`. Route guard needed for `/admin/charter`.
+
+## 6.5 Action Items / Known Issues in Current Implementation
+
+- **Encoding:** Text localization/Vietnamese text encoding bugs need to be resolved.
+- **React Warnings:** Missing `onChange` handlers for several input components on Register page.
+- **Form Submissions:** Register/Login logic are placeholders and require form submission bindings.
+- **Seat Mapping:** `Seat.status` mock logic needs to be mapped to ticket reservation from `tripInstanceId`.
+- **UX Improvement (Round-trips):** Clarify the flow on `/trips` and `/seats` to distinguish "Outbound (Chiều đi)" vs "Return (Chiều về)".

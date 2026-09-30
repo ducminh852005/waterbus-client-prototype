@@ -1,7 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 const Login = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement actual login logic
+    navigate('/');
+  };
+
   return (
     <>
       <Header />
@@ -99,11 +107,7 @@ const Login = () => {
                   </p>
                 </div>
 
-                <form
-                  className="space-y-space-md"
-                  id="loginForm"
-                  onSubmit={(e) => e.preventDefault()}
-                >
+                <form className="space-y-space-md" id="loginForm" onSubmit={handleSubmit}>
                   <div className="space-y-1">
                     <label
                       className="font-label-md text-label-md text-on-surface block tracking-wider uppercase"

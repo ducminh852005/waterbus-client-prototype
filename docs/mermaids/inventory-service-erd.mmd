@@ -7,7 +7,5 @@ erDiagram
         bigint booking_id REF "Nullable"
         string seat_number
         string status "AVAILABLE, HOLDING, BOOKED"
-        timestamp lock_expires_at "Redis TTL"
-        string hold_token
     }
 ```

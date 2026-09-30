@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBooking } from '../context/BookingContext';
 import type { Trip } from '../types';
-import { searchTrips } from '../services';
-import { generateTrips } from '../mocks';
-import { addDays, formatShortDate, formatWeekdayLabel } from '../utils/date';
+import { searchTrips, getTripDatePrices } from '../services/tripService';
+import { formatShortDate, formatWeekdayLabel } from '../utils/date';
 
 export type TripSortBy = 'earliest' | 'cheapest' | 'most-seats';
 
@@ -72,21 +71,24 @@ export function useTripSearch() {
     }
   };
 
-  const weekDates = useMemo(() => {
-    if (!searchParams) return [];
+  const [weekDates, setWeekDates] = useState<
+    { date: string; weekday: string; shortDate: string; minPrice: number }[]
+  >([]);
+
+  useEffect(() => {
+    if (!searchParams) return;
     const dateBase = isReturn ? searchParams.returnDate! : searchParams.date;
     const origin = isReturn ? searchParams.to : searchParams.from;
     const dest = isReturn ? searchParams.from : searchParams.to;
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = addDays(dateBase, i - 3);
-      const dayTrips = generateTrips(origin, dest, date);
-      const minPrice = Math.min(...dayTrips.map((t) => t.price));
-      return {
-        date,
-        weekday: formatWeekdayLabel(date),
-        shortDate: formatShortDate(date),
-        minPrice,
-      };
+
+    getTripDatePrices(origin, dest, dateBase, 7).then((prices) => {
+      const formatted = prices.map((p) => ({
+        date: p.date,
+        weekday: formatWeekdayLabel(p.date),
+        shortDate: formatShortDate(p.date),
+        minPrice: p.minPrice,
+      }));
+      setWeekDates(formatted);
     });
   }, [searchParams, isReturn]);
 

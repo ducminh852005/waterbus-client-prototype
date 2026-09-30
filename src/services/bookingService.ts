@@ -30,7 +30,9 @@ export async function createBooking(payload: CreateBookingPayload): Promise<Book
   const issuedAt = new Date();
   const bookingCode = generateBookingCode(issuedAt);
   const confirmation: BookingConfirmation = {
+    bookingId: Math.floor(Math.random() * 10000),
     bookingCode,
+    customerPhone: payload.passengerInfo.contact.phone,
     trip: payload.trip,
     returnTrip: payload.returnTrip,
     seats: payload.seats,
@@ -38,7 +40,7 @@ export async function createBooking(payload: CreateBookingPayload): Promise<Book
     passengerInfo: payload.passengerInfo,
     paymentMethod: payload.paymentMethod,
     priceBreakdown: payload.priceBreakdown,
-    qrPayload: bookingCode,
+    finalAmount: payload.priceBreakdown.total,
     issuedAt: issuedAt.toISOString(),
   };
   return delay(confirmation, 700);

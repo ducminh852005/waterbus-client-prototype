@@ -6,7 +6,7 @@ import type { ContactInfo, Passenger, SpecialRequest } from '../types';
 function buildInitialPassengers(seatIds: string[]): Passenger[] {
   return seatIds.map((seatId) => ({
     seatId,
-    type: 'adult',
+    fullName: '',
   }));
 }
 
@@ -19,7 +19,6 @@ export function usePassengerInfo() {
     fullName: '',
     phone: '',
     email: '',
-    notifyByZaloSms: true,
   });
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [specialRequests, setSpecialRequests] = useState<SpecialRequest[]>([]);
@@ -40,7 +39,9 @@ export function usePassengerInfo() {
   };
 
   const copyContactToPassenger = (index: number) => {
-    // Không còn áp dụng vì form passenger không còn hỏi fullName
+    if (contact.fullName) {
+      updatePassenger(index, { fullName: contact.fullName });
+    }
   };
 
   const toggleSpecialRequest = (request: SpecialRequest) => {

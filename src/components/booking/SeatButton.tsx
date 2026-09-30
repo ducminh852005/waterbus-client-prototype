@@ -7,7 +7,7 @@ type SeatButtonProps = {
 };
 
 export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps) {
-  const isBooked = seat.status === 'booked';
+  const isBooked = seat.status === 'BOOKED';
 
   if (selected) {
     return (
@@ -42,18 +42,6 @@ export default function SeatButton({ seat, selected, onToggle }: SeatButtonProps
       >
         <span className="">{seat.id}</span>
         <span className="text-[9px] uppercase">Đã bán</span>
-      </button>
-    );
-  }
-
-  if (seat.status === 'priority') {
-    return (
-      <button
-        className="bg-secondary-container text-on-secondary-container font-label-md text-label-md flex h-10 items-center justify-center gap-1 rounded-lg font-bold shadow-sm transition-all hover:brightness-95"
-        type="button"
-        onClick={onToggle}
-      >
-        <span className="material-symbols-outlined text-[15px]">accessible_forward</span> {seat.id}
       </button>
     );
   }

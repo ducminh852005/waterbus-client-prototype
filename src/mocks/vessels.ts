@@ -2,7 +2,7 @@ import type { Vessel } from '../types';
 
 export const VESSELS: Vessel[] = [
   {
-    id: 'V-EXPRESS',
+    id: 1,
     name: 'Tàu Express 75 Chỗ',
     type: 'express',
     capacity: 75,
@@ -10,7 +10,7 @@ export const VESSELS: Vessel[] = [
     description: 'Cabin kín máy lạnh, khoang mở phía sau đón gió.',
   },
   {
-    id: 'V-PANORAMA',
+    id: 2,
     name: 'Tàu Panorama 360°',
     type: 'panorama',
     capacity: 60,
@@ -18,7 +18,7 @@ export const VESSELS: Vessel[] = [
     description: 'Kính vòm toàn cảnh chạm trần, boong thượng ngắm view.',
   },
   {
-    id: 'V-CRUISER',
+    id: 3,
     name: 'Tàu River Cruiser',
     type: 'cruiser',
     capacity: 50,

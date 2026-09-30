@@ -4,3 +4,4 @@ export * from './tripService';
 export * from './seatService';
 export * from './voucherService';
 export * from './bookingService';
+export * from './paymentService';

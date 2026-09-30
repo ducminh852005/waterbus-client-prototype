@@ -1,9 +1,10 @@
 import type { StationCode } from './station';
 import type { Trip } from './trip';
+import type { Seat } from './seat';
 import type { PassengerInfo } from './passenger';
 import type { PaymentMethodId } from './payment';
 
-export type TripType = 'one-way' | 'round-trip' | 'charter';
+export type TripType = 'one-way' | 'round-trip';
 
 export interface BookingSearchParams {
   from: StationCode;
@@ -35,8 +36,8 @@ export interface BookingConfirmation {
   customerPhone: string;
   trip: Trip;
   returnTrip?: Trip;
-  tickets: Ticket[];
-  returnTickets?: Ticket[];
+  seats: Seat[];
+  returnSeats?: Seat[];
   passengerInfo: PassengerInfo;
   paymentMethod: PaymentMethodId;
   priceBreakdown: PriceBreakdown;

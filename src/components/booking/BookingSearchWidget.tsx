@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useBookingSearch } from '../../hooks/useBookingSearch';
-import { StationSelect } from './StationSelect';
+import StationSelect from './StationSelect';
 
 export default function BookingSearchWidget() {
   const {

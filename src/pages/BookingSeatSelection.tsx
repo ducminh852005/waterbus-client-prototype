@@ -30,10 +30,10 @@ const BookingSeatSelection = () => {
               <div className="pb-space-md gap-space-xs flex flex-col justify-between md:flex-row md:items-center">
                 <div>
                   <span className="font-label-sm text-label-sm text-outline tracking-widest uppercase">
-                    12_Booking_Seat_Selection
+                    12_Booking_Seat_Selection - {isReturn ? 'Chiều Về' : 'Chiều Đi'}
                   </span>
                   <h1 className="font-headline-sm text-headline-sm text-primary tracking-tight">
-                    Lựa Chọn Chỗ Ngồi Trực Quan
+                    Lựa Chọn Chỗ Ngồi Trực Quan {isReturn && '- Tuyến Trở Về'}
                   </h1>
                 </div>
                 <div className="gap-space-xs text-on-surface-variant font-label-md text-label-md bg-surface-container px-space-sm py-space-xs flex items-center self-start rounded-full md:self-auto">

@@ -1,7 +1,7 @@
 import BookingStepper from '../components/BookingStepper';
 import { useTripSearch } from '../hooks/useTripSearch';
 import { DateStrip, TripCard } from '../components/booking';
-import { getStationByCode } from '../mocks';
+import { getStationByCodeSync } from '../services';
 
 const BookingTripSelection = () => {
   const {
@@ -18,8 +18,8 @@ const BookingTripSelection = () => {
 
   if (!searchParams) return null;
 
-  const origin = getStationByCode(isReturn ? searchParams.to : searchParams.from);
-  const dest = getStationByCode(isReturn ? searchParams.from : searchParams.to);
+  const origin = getStationByCodeSync(isReturn ? searchParams.to : searchParams.from);
+  const dest = getStationByCodeSync(isReturn ? searchParams.from : searchParams.to);
 
   return (
     <>
@@ -111,8 +111,8 @@ const BookingTripSelection = () => {
                 <div className="gap-space-sm flex flex-wrap items-center justify-between px-1">
                   <div className="flex items-center gap-2">
                     <span className="font-title-md text-title-md text-primary font-semibold">
-                      {isReturn ? 'Tuyến Trở Về' : 'Tuyến Khởi Hành'}: {origin?.shortName} ➔{' '}
-                      {dest?.shortName}
+                      {isReturn ? 'Tuyến Trở Về (Chiều Về)' : 'Tuyến Khởi Hành (Chiều Đi)'}:{' '}
+                      {origin?.shortName} ➔ {dest?.shortName}
                     </span>
                     <span className="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded-full px-2 py-0.5 font-bold">
                       {trips.length} Chuyến Khả Dụng

@@ -1,0 +1,1232 @@
+openapi: 3.0.3
+info:
+  title: Waterbus API Documentation
+  version: 1.0.0
+  description: API documentation for Waterbus Booking System
+servers:
+  - url: /api
+    description: Base path
+paths:
+  /stations:
+    get:
+      summary: Lấy danh sách bến tàu
+      tags:
+        - Home
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StationDto'
+
+  /routes/featured:
+    get:
+      summary: Lấy các tuyến nổi bật
+      tags:
+        - Home
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FeaturedRouteDto'
+
+  /trips/search:
+    post:
+      summary: Tìm chuyến chạy (có phân chiều)
+      tags:
+        - Booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripSearchRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/TripSearchResponseDto'
+
+  /trips/date-prices:
+    get:
+      summary: Lấy giá và số chuyến cho Date Strip 7 ngày
+      tags:
+        - Booking
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: days
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TripDatePriceDto'
+
+  /trips/{tripInstanceId}/seat-map:
+    get:
+      summary: Lấy sơ đồ ghế theo chuyến
+      tags:
+        - Booking
+      parameters:
+        - name: tripInstanceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/SeatMapDto'
+
+  /bookings/preview:
+    post:
+      summary: Xem trước Booking (Tính tiền tạm tính)
+      tags:
+        - Booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingPreviewRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/BookingPreviewResponseDto'
+
+  /bookings/validate-passengers:
+    post:
+      summary: Validate thông tin hành khách (Tùy chọn)
+      tags:
+        - Booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatePassengerRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ValidatePassengerResponseDto'
+
+  /payment-methods:
+    get:
+      summary: Lấy phương thức thanh toán
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PaymentMethodDto'
+
+  /vouchers/validate:
+    post:
+      summary: Validate Voucher
+      tags:
+        - Payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateVoucherRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/VoucherValidationResponseDto'
+
+  /bookings:
+    post:
+      summary: Tạo Booking (Tiến hành đặt vé)
+      tags:
+        - Booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/CreateBookingResponseDto'
+
+  /payments/{paymentId}/confirm:
+    post:
+      summary: Xác nhận thanh toán (Mock / Demo / Internal)
+      tags:
+        - Payment
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmPaymentRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ConfirmPaymentResponseDto'
+
+  /bookings/{bookingCode}:
+    get:
+      summary: Lấy chi tiết Booking
+      tags:
+        - Booking
+      parameters:
+        - name: bookingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/BookingDetailDto'
+
+  /bookings/{bookingCode}/ticket-pdf:
+    get:
+      summary: Lấy PDF Vé (Tùy chọn)
+      tags:
+        - Booking
+      parameters:
+        - name: bookingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /bookings/{bookingCode}/resend:
+    post:
+      summary: Gửi lại vé qua Email/SMS (Tùy chọn)
+      tags:
+        - Booking
+      parameters:
+        - name: bookingCode
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendTicketRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ResendTicketResponseDto'
+
+  /live-trips:
+    get:
+      summary: Danh sách chuyến đang chạy
+      tags:
+        - Live
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LiveTripDto'
+
+  /trips/{tripInstanceId}/telemetry/latest:
+    get:
+      summary: Telemetry vị trí tàu mới nhất (Tùy chọn)
+      tags:
+        - Live
+      parameters:
+        - name: tripInstanceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ShipTelemetryDto'
+
+  /auth/login:
+    post:
+      summary: Đăng nhập
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/LoginResponseDto'
+
+  /auth/forgot-password:
+    post:
+      summary: Quên mật khẩu
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequestDto'
+      responses:
+        '200':
+          description: OK
+
+  /auth/register:
+    post:
+      summary: Đăng ký
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/RegisterResponseDto'
+
+  /auth/verify:
+    post:
+      summary: Xác thực tài khoản
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyAccountRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/VerifyAccountResponseDto'
+
+components:
+  schemas:
+    StationDto:
+      type: object
+      properties:
+        stationId:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        shortName:
+          type: string
+        area:
+          type: string
+        address:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        isActive:
+          type: boolean
+      required: [stationId, code, name, shortName, area, address, latitude, longitude, isActive]
+
+    FeaturedRouteDto:
+      type: object
+      properties:
+        routeId:
+          type: integer
+        fromStation:
+          $ref: '#/components/schemas/StationDto'
+        toStation:
+          $ref: '#/components/schemas/StationDto'
+        name:
+          type: string
+        distanceKm:
+          type: number
+        estimatedMinutes:
+          type: integer
+        basePrice:
+          type: number
+        frequencyText:
+          type: string
+        imageUrl:
+          type: string
+        tag:
+          type: string
+      required: [routeId, fromStation, toStation, name, distanceKm, estimatedMinutes, basePrice, frequencyText]
+
+    TripSearchRequestDto:
+      type: object
+      properties:
+        fromStationCode:
+          type: string
+        toStationCode:
+          type: string
+        departureDate:
+          type: string
+          format: date
+        returnDate:
+          type: string
+          format: date
+        passengers:
+          type: integer
+        tripType:
+          type: string
+          enum: [one-way, round-trip]
+        direction:
+          type: string
+          enum: [outbound, return]
+      required: [fromStationCode, toStationCode, departureDate, passengers, tripType]
+
+    TripSearchResultDto:
+      type: object
+      properties:
+        tripInstanceId:
+          type: integer
+        tripCode:
+          type: string
+        routeId:
+          type: integer
+        fromStation:
+          type: object
+          properties:
+            stationId:
+              type: integer
+            code:
+              type: string
+            name:
+              type: string
+            shortName:
+              type: string
+          required: [stationId, code, name, shortName]
+        toStation:
+          type: object
+          properties:
+            stationId:
+              type: integer
+            code:
+              type: string
+            name:
+              type: string
+            shortName:
+              type: string
+          required: [stationId, code, name, shortName]
+        tripDate:
+          type: string
+          format: date
+        departureTime:
+          type: string
+        arrivalTime:
+          type: string
+        durationMinutes:
+          type: integer
+        ship:
+          type: object
+          properties:
+            shipId:
+              type: integer
+            name:
+              type: string
+            shipType:
+              type: string
+            capacity:
+              type: integer
+            description:
+              type: string
+            amenities:
+              type: array
+              items:
+                type: string
+          required: [shipId, name, shipType, capacity, amenities]
+        price:
+          type: number
+        availableSeats:
+          type: integer
+        totalSeats:
+          type: integer
+        status:
+          type: string
+          enum: [available, low, soldout]
+        displayTag:
+          type: string
+          enum: [recommended, scenic]
+      required: [tripInstanceId, tripCode, routeId, fromStation, toStation, tripDate, departureTime, arrivalTime, durationMinutes, ship, price, availableSeats, totalSeats, status]
+
+    TripSearchResponseDto:
+      type: object
+      properties:
+        searchId:
+          type: string
+        outboundTrips:
+          type: array
+          items:
+            $ref: '#/components/schemas/TripSearchResultDto'
+        returnTrips:
+          type: array
+          items:
+            $ref: '#/components/schemas/TripSearchResultDto'
+      required: [outboundTrips]
+
+    TripDatePriceDto:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        minPrice:
+          type: number
+        availableTripCount:
+          type: integer
+      required: [date, minPrice, availableTripCount]
+
+    SeatDto:
+      type: object
+      properties:
+        seatId:
+          type: integer
+        seatNumber:
+          type: string
+        deck:
+          type: string
+        category:
+          type: string
+          enum: [vip, standard, deck]
+        price:
+          type: number
+        status:
+          type: string
+          enum: [AVAILABLE, HOLDING, BOOKED]
+      required: [seatId, seatNumber, category, price, status]
+
+    SeatMapSectionDto:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [vip, standard, deck]
+        label:
+          type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/SeatDto'
+      required: [id, label, rows]
+
+    SeatMapDto:
+      type: object
+      properties:
+        tripInstanceId:
+          type: integer
+        shipId:
+          type: integer
+        shipName:
+          type: string
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatMapSectionDto'
+      required: [tripInstanceId, shipId, shipName, sections]
+
+    BookingPreviewRequestDto:
+      type: object
+      properties:
+        outboundTripInstanceId:
+          type: integer
+        outboundSeatIds:
+          type: array
+          items:
+            type: integer
+        returnTripInstanceId:
+          type: integer
+        returnSeatIds:
+          type: array
+          items:
+            type: integer
+        voucherCode:
+          type: string
+      required: [outboundTripInstanceId, outboundSeatIds]
+
+    BookingPreviewResponseDto:
+      type: object
+      properties:
+        subtotal:
+          type: number
+        voucherDiscount:
+          type: number
+        total:
+          type: number
+        voucherCode:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              tripInstanceId:
+                type: integer
+              seatId:
+                type: integer
+              seatNumber:
+                type: string
+              price:
+                type: number
+            required: [tripInstanceId, seatId, seatNumber, price]
+      required: [subtotal, voucherDiscount, total, items]
+
+    ContactInfoDto:
+      type: object
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+      required: [fullName, phone, email]
+
+    PassengerDto:
+      type: object
+      properties:
+        seatId:
+          type: integer
+        fullName:
+          type: string
+      required: [seatId, fullName]
+
+    ValidatePassengerRequestDto:
+      type: object
+      properties:
+        contact:
+          $ref: '#/components/schemas/ContactInfoDto'
+        passengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PassengerDto'
+        specialRequests:
+          type: array
+          items:
+            type: string
+        agreedToTerms:
+          type: boolean
+      required: [contact, passengers, specialRequests, agreedToTerms]
+
+    ValidatePassengerResponseDto:
+      type: object
+      properties:
+        valid:
+          type: boolean
+      required: [valid]
+
+    PaymentMethodDto:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [vnpay, momo, zalopay, napas, credit]
+        name:
+          type: string
+        description:
+          type: string
+        badge:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isActive:
+          type: boolean
+      required: [id, name, description, isActive]
+
+    ValidateVoucherRequestDto:
+      type: object
+      properties:
+        code:
+          type: string
+        subtotal:
+          type: number
+        userId:
+          type: string
+      required: [code, subtotal]
+
+    VoucherValidationResponseDto:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        voucher:
+          type: object
+          properties:
+            code:
+              type: string
+            description:
+              type: string
+            voucherType:
+              type: string
+              enum: [percent, fixed]
+            voucherValue:
+              type: number
+            maxVoucherAmount:
+              type: number
+            minOrderAmount:
+              type: number
+          required: [code, description, voucherType, voucherValue]
+        discountAmount:
+          type: number
+        finalAmount:
+          type: number
+        message:
+          type: string
+      required: [valid, discountAmount, finalAmount]
+
+    CreateBookingRequestDto:
+      type: object
+      properties:
+        userId:
+          type: string
+        bookingChannel:
+          type: string
+          enum: [web, staff]
+        outboundTripInstanceId:
+          type: integer
+        outboundSeatIds:
+          type: array
+          items:
+            type: integer
+        returnTripInstanceId:
+          type: integer
+        returnSeatIds:
+          type: array
+          items:
+            type: integer
+        contact:
+          $ref: '#/components/schemas/ContactInfoDto'
+        passengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PassengerDto'
+        specialRequests:
+          type: array
+          items:
+            type: string
+        specialRequestNote:
+          type: string
+        voucherCode:
+          type: string
+        paymentMethod:
+          type: string
+          enum: [vnpay, momo, zalopay, napas, credit]
+      required: [bookingChannel, outboundTripInstanceId, outboundSeatIds, contact, passengers, paymentMethod]
+
+    CreateBookingResponseDto:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+        bookingCode:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, PAID, CANCELLED]
+        totalAmount:
+          type: number
+        voucherDiscount:
+          type: number
+        finalAmount:
+          type: number
+        payment:
+          type: object
+          properties:
+            paymentId:
+              type: integer
+            transactionCode:
+              type: string
+            paymentGateway:
+              type: string
+            paymentStatus:
+              type: string
+              enum: [pending, paid, failed]
+            paymentUrl:
+              type: string
+          required: [paymentId, transactionCode, paymentGateway, paymentStatus]
+        expiresAt:
+          type: string
+          format: date-time
+      required: [bookingId, bookingCode, status, totalAmount, voucherDiscount, finalAmount, payment]
+
+    ConfirmPaymentRequestDto:
+      type: object
+      properties:
+        gatewayTransactionId:
+          type: string
+        idempotencyKey:
+          type: string
+      required: [idempotencyKey]
+
+    ConfirmPaymentResponseDto:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+        bookingCode:
+          type: string
+        paymentStatus:
+          type: string
+          enum: [paid, failed]
+        bookingStatus:
+          type: string
+          enum: [PENDING, PAID, CANCELLED]
+      required: [bookingId, bookingCode, paymentStatus, bookingStatus]
+
+    TicketDto:
+      type: object
+      properties:
+        ticketId:
+          type: integer
+        seatId:
+          type: integer
+        seatNumber:
+          type: string
+        passengerName:
+          type: string
+        qrPayload:
+          type: string
+        qrVersion:
+          type: integer
+        qrIssuedAt:
+          type: string
+          format: date-time
+        qrExpiresAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [VALID, USED, CANCELLED]
+      required: [ticketId, seatId, seatNumber, passengerName, qrPayload, qrVersion, qrIssuedAt, status]
+
+    BookingTripTicketGroupDto:
+      type: object
+      properties:
+        trip:
+          $ref: '#/components/schemas/TripSearchResultDto'
+        tickets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketDto'
+      required: [trip, tickets]
+
+    BookingDetailDto:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+        bookingCode:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, PAID, CANCELLED]
+        contact:
+          $ref: '#/components/schemas/ContactInfoDto'
+        totalAmount:
+          type: number
+        voucherDiscount:
+          type: number
+        finalAmount:
+          type: number
+        paymentMethod:
+          type: string
+        paidAt:
+          type: string
+          format: date-time
+        issuedAt:
+          type: string
+          format: date-time
+        outbound:
+          $ref: '#/components/schemas/BookingTripTicketGroupDto'
+        returnTrip:
+          $ref: '#/components/schemas/BookingTripTicketGroupDto'
+      required: [bookingId, bookingCode, status, contact, totalAmount, voucherDiscount, finalAmount, paymentMethod, issuedAt, outbound]
+
+    ResendTicketRequestDto:
+      type: object
+      properties:
+        channels:
+          type: array
+          items:
+            type: string
+            enum: [email, sms, zalo]
+      required: [channels]
+
+    ResendTicketResponseDto:
+      type: object
+      properties:
+        sent:
+          type: boolean
+      required: [sent]
+
+    LiveTripDto:
+      type: object
+      properties:
+        tripInstanceId:
+          type: integer
+        tripCode:
+          type: string
+        ship:
+          type: object
+          properties:
+            shipId:
+              type: integer
+            name:
+              type: string
+            shipType:
+              type: string
+          required: [shipId, name, shipType]
+        status:
+          type: string
+          enum: [moving, boarding, delayed, arrived, cancelled]
+        fromStation:
+          type: object
+          properties:
+            code:
+              type: string
+            name:
+              type: string
+            shortName:
+              type: string
+          required: [code, name, shortName]
+        toStation:
+          type: object
+          properties:
+            code:
+              type: string
+            name:
+              type: string
+            shortName:
+              type: string
+          required: [code, name, shortName]
+        departureTime:
+          type: string
+        eta:
+          type: string
+        progress:
+          type: number
+        speed:
+          type: string
+        currentPositionText:
+          type: string
+        delayMinutes:
+          type: integer
+        telemetry:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+            speedKnots:
+              type: number
+            heading:
+              type: number
+            recordedAt:
+              type: string
+              format: date-time
+          required: [latitude, longitude, speedKnots, heading, recordedAt]
+      required: [tripInstanceId, tripCode, ship, status, fromStation, toStation, departureTime, eta, progress, speed, currentPositionText, delayMinutes]
+
+    ShipTelemetryDto:
+      type: object
+      properties:
+        shipId:
+          type: integer
+        latitude:
+          type: number
+        longitude:
+          type: number
+        speedKnots:
+          type: number
+        heading:
+          type: number
+        recordedAt:
+          type: string
+          format: date-time
+      required: [shipId, latitude, longitude, speedKnots, heading, recordedAt]
+
+    LoginRequestDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+        password:
+          type: string
+        rememberDevice:
+          type: boolean
+      required: [identifier, password, rememberDevice]
+
+    UserProfileDto:
+      type: object
+      properties:
+        userId:
+          type: string
+        role:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        isVerified:
+          type: boolean
+      required: [userId, role, fullName, email, phone, isVerified]
+
+    LoginResponseDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserProfileDto'
+      required: [accessToken, refreshToken, user]
+
+    ForgotPasswordRequestDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+      required: [identifier]
+
+    RegisterRequestDto:
+      type: object
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+        acceptedTerms:
+          type: boolean
+        acceptedPromotions:
+          type: boolean
+      required: [fullName, phone, email, password, confirmPassword, acceptedTerms, acceptedPromotions]
+
+    RegisterResponseDto:
+      type: object
+      properties:
+        userId:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        isVerified:
+          type: boolean
+        verificationRequired:
+          type: boolean
+      required: [userId, email, phone, isVerified, verificationRequired]
+
+    VerifyAccountRequestDto:
+      type: object
+      properties:
+        userId:
+          type: string
+        verificationCode:
+          type: string
+      required: [userId, verificationCode]
+
+    VerifyAccountResponseDto:
+      type: object
+      properties:
+        verified:
+          type: boolean
+      required: [verified]
