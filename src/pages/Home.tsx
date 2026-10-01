@@ -279,8 +279,10 @@ const Home = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div
-                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl"
+              <button
+                type="button"
+                onClick={() => handleQuickBook('BD', 'TD')}
+                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex w-full cursor-pointer flex-col overflow-hidden rounded-2xl border text-left shadow-sm transition-all duration-300 hover:shadow-xl focus:outline-none"
                 style={{ animationDelay: '0.1s' }}
               >
                 <div className="relative h-60 overflow-hidden">
@@ -312,20 +314,20 @@ const Home = () => {
                   </div>
                   <div className="border-surface-container-highest flex items-center justify-between border-t pt-2 text-xs">
                     <span className="text-outline">Tần suất: 30 phút / chuyến</span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickBook('BD', 'TD')}
-                      className="text-secondary hover:text-primary inline-flex cursor-pointer items-center gap-1 font-semibold"
-                    >
+                    <span className="text-secondary group-hover:text-primary inline-flex items-center gap-1 font-semibold transition-colors">
                       Đặt vé ngay{' '}
-                      <span className="material-symbols-outlined text-[16px]">east</span>
-                    </button>
+                      <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
+                        east
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </button>
 
-              <div
-                className="animate-fade-in-up bg-surface-container-lowest group border-secondary/40 relative flex flex-col overflow-hidden rounded-2xl border-2 shadow-[0_16px_36px_rgba(8,43,58,0.1)] transition-all duration-300"
+              <button
+                type="button"
+                onClick={() => handleQuickBook('BD', 'BA')}
+                className="animate-fade-in-up bg-surface-container-lowest group border-secondary/40 relative flex w-full cursor-pointer flex-col overflow-hidden rounded-2xl border-2 text-left shadow-[0_16px_36px_rgba(8,43,58,0.1)] transition-all duration-300 hover:-translate-y-1 focus:outline-none"
                 style={{ animationDelay: '0.2s' }}
               >
                 <div className="bg-on-tertiary-container text-on-tertiary absolute top-3 right-3 z-10 rounded-full px-3 py-1 text-[11px] font-bold tracking-wider uppercase shadow-md">
@@ -359,20 +361,20 @@ const Home = () => {
                   </div>
                   <div className="border-surface-container-highest flex items-center justify-between border-t pt-2 text-xs">
                     <span className="text-outline">Tần suất: 20 phút / chuyến</span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickBook('BD', 'BA')}
-                      className="text-on-tertiary-container hover:text-tertiary inline-flex cursor-pointer items-center gap-1 font-bold"
-                    >
+                    <span className="text-on-tertiary-container group-hover:text-tertiary inline-flex items-center gap-1 font-bold transition-colors">
                       Đặt vé ngay{' '}
-                      <span className="material-symbols-outlined text-[16px]">east</span>
-                    </button>
+                      <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
+                        east
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </button>
 
-              <div
-                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex flex-col overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-xl"
+              <button
+                type="button"
+                onClick={() => handleQuickBook('BD', 'LD')}
+                className="animate-fade-in-up bg-surface-container-lowest group border-outline-variant/20 flex w-full cursor-pointer flex-col overflow-hidden rounded-2xl border text-left shadow-sm transition-all duration-300 hover:shadow-xl focus:outline-none"
                 style={{ animationDelay: '0.3s' }}
               >
                 <div className="relative h-60 overflow-hidden">
@@ -403,17 +405,15 @@ const Home = () => {
                   </div>
                   <div className="border-surface-container-highest flex items-center justify-between border-t pt-2 text-xs">
                     <span className="text-outline">Tần suất: 45 phút / chuyến</span>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickBook('BD', 'LD')}
-                      className="text-secondary hover:text-primary inline-flex cursor-pointer items-center gap-1 font-semibold"
-                    >
+                    <span className="text-secondary group-hover:text-primary inline-flex items-center gap-1 font-semibold transition-colors">
                       Đặt vé ngay{' '}
-                      <span className="material-symbols-outlined text-[16px]">east</span>
-                    </button>
+                      <span className="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">
+                        east
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </section>

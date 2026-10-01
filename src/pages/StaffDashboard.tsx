@@ -51,15 +51,21 @@ export default function StaffDashboard() {
                 className="flex items-center justify-between border-b border-slate-50 pb-3 last:border-0 last:pb-0"
               >
                 <div>
-                  <p className="font-medium text-slate-800">
-                    Seat {Math.floor(Math.random() * 50) + 1}
-                  </p>
-                  <p className="text-xs text-slate-500">2 mins ago</p>
+                  <p className="font-medium text-slate-800">Seat {10 + i * 2}</p>
+                  <p className="text-xs text-slate-500">{i} mins ago</p>
                 </div>
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-6 flex justify-center pb-6">
+          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/30 transition-all active:scale-95">
+            <CheckCircle2 className="h-5 w-5" />
+            End Boarding & Depart
+          </button>
         </div>
       </div>
     </div>

@@ -21,152 +21,148 @@ export default function TicketCard({ confirmation, isReturn }: TicketCardProps) 
   const issuedLabel = `${String(issuedDate.getDate()).padStart(2, '0')}/${String(issuedDate.getMonth() + 1).padStart(2, '0')}/${issuedDate.getFullYear()} ${issuedDate.toLocaleTimeString('vi-VN')}`;
 
   return (
-    <div className="bg-surface-container-lowest mb-space-xl relative w-full overflow-hidden rounded-xl shadow-xl">
-      <div className="bg-primary-container px-space-lg py-space-md text-on-primary gap-space-sm flex flex-col justify-between md:flex-row md:items-center">
-        <div className="gap-space-sm flex items-center">
-          <div className="bg-primary text-secondary-fixed flex h-9 w-9 items-center justify-center rounded">
-            <span className="material-symbols-outlined text-[22px]">directions_boat</span>
+    <div className="bg-surface-container-lowest mb-space-md relative w-full overflow-hidden rounded-xl border border-slate-100 shadow-lg">
+      <div className="bg-primary-container text-on-primary flex flex-col justify-between gap-3 px-4 py-3 md:flex-row md:items-center">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary text-secondary-fixed flex h-8 w-8 items-center justify-center rounded">
+            <span className="material-symbols-outlined text-[18px]">directions_boat</span>
           </div>
           <div>
-            <span className="font-headline-sm text-title-md text-on-primary block tracking-tight uppercase">
+            <span className="text-on-primary block text-sm font-bold tracking-tight uppercase">
               SÔNG XANH EXPRESS
             </span>
-            <span className="font-label-sm text-secondary-fixed-dim block tracking-widest uppercase">
+            <span className="text-secondary-fixed-dim block text-[10px] tracking-widest uppercase">
               Thẻ lên tàu điện tử / Riverine Boarding Pass {isReturn ? '(CHIỀU VỀ)' : ''}
             </span>
           </div>
         </div>
-        <div className="gap-space-sm bg-primary/60 px-space-md py-space-xs flex items-center rounded">
-          <span className="font-label-sm text-on-primary-container tracking-wider uppercase">
+        <div className="bg-primary/60 flex items-center gap-2 rounded px-3 py-1">
+          <span className="text-on-primary-container text-[10px] tracking-wider uppercase">
             Mã đặt vé
           </span>
-          <span className="font-title-md text-title-md text-on-tertiary-container font-bold tracking-wider">
+          <span className="text-on-tertiary-container text-sm font-bold tracking-wider">
             {bookingCode}
           </span>
         </div>
       </div>
 
-      <div className="p-space-lg gap-space-lg grid grid-cols-1 items-center lg:grid-cols-12">
-        <div className="space-y-space-md lg:col-span-7">
-          <div className="bg-surface-container-low p-space-md flex items-center justify-between rounded-lg">
+      <div className="grid grid-cols-1 items-start gap-4 p-4 lg:grid-cols-12">
+        <div className="space-y-3 lg:col-span-8">
+          <div className="bg-surface-container-low flex items-center justify-between rounded-lg p-3">
             <div className="flex flex-col">
-              <span className="font-label-sm text-outline tracking-widest uppercase">
+              <span className="text-outline text-[10px] font-semibold tracking-widest uppercase">
                 Bến khởi hành
               </span>
-              <span className="font-headline-sm text-headline-sm text-primary font-bold uppercase">
+              <span className="text-primary text-lg font-bold whitespace-nowrap uppercase">
                 {origin?.shortName}
               </span>
-              <span className="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
-                <span className="material-symbols-outlined text-secondary text-[16px]">
+              <span className="text-on-surface-variant flex items-center gap-1 text-xs">
+                <span className="material-symbols-outlined text-secondary text-[14px]">
                   location_on
                 </span>{' '}
                 {origin?.area}
               </span>
             </div>
 
-            <div className="px-space-sm flex flex-col items-center">
-              <span className="font-label-sm text-on-tertiary-container font-semibold tracking-wider uppercase">
+            <div className="flex flex-col items-center px-2">
+              <span className="text-on-tertiary-container text-[10px] font-semibold tracking-wider uppercase">
                 {trip.durationMinutes} Phút
               </span>
               <div className="my-1 flex items-center gap-1">
-                <div className="bg-secondary h-2 w-2 rounded-full"></div>
-                <div className="bg-secondary-fixed-dim h-[2px] w-16 sm:w-24"></div>
-                <span className="material-symbols-outlined text-secondary text-[20px]">
+                <div className="bg-secondary h-1.5 w-1.5 rounded-full"></div>
+                <div className="bg-secondary-fixed-dim h-[2px] w-12 sm:w-20"></div>
+                <span className="material-symbols-outlined text-secondary text-[16px]">
                   sailing
                 </span>
               </div>
-              <span className="font-label-sm text-outline">Tốc hành đường sông</span>
+              <span className="text-outline text-[10px]">Tốc hành đường sông</span>
             </div>
             <div className="flex flex-col text-right">
-              <span className="font-label-sm text-outline tracking-widest uppercase">
+              <span className="text-outline text-[10px] font-semibold tracking-widest uppercase">
                 Bến cập bến
               </span>
-              <span className="font-headline-sm text-headline-sm text-primary font-bold uppercase">
+              <span className="text-primary text-lg font-bold whitespace-nowrap uppercase">
                 {dest?.shortName}
               </span>
-              <span className="font-body-md text-body-md text-on-surface-variant flex items-center justify-end gap-1">
+              <span className="text-on-surface-variant flex items-center justify-end gap-1 text-xs">
                 {dest?.area}{' '}
-                <span className="material-symbols-outlined text-secondary text-[16px]">flag</span>
+                <span className="material-symbols-outlined text-secondary text-[14px]">flag</span>
               </span>
             </div>
           </div>
 
-          <div className="gap-space-sm pt-space-xs grid grid-cols-2 sm:grid-cols-3">
-            <div className="bg-surface-container p-space-sm rounded">
-              <span className="font-label-sm text-outline mb-0.5 block tracking-wider uppercase">
+          <div className="grid grid-cols-2 gap-2 pt-1 sm:grid-cols-3">
+            <div className="bg-surface-container rounded p-2">
+              <span className="text-outline mb-0.5 block text-[10px] font-semibold tracking-wider uppercase">
                 Thời gian đi
               </span>
-              <span className="font-title-md text-title-md text-primary block font-bold">
-                {trip.departureTime}
-              </span>
-              <span className="font-label-sm text-on-surface-variant">{trip.date}</span>
+              <span className="text-primary block text-sm font-bold">{trip.departureTime}</span>
+              <span className="text-on-surface-variant text-[10px]">{trip.date}</span>
             </div>
-            <div className="bg-surface-container p-space-sm rounded">
-              <span className="font-label-sm text-outline mb-0.5 block tracking-wider uppercase">
+            <div className="bg-surface-container rounded p-2">
+              <span className="text-outline mb-0.5 block text-[10px] font-semibold tracking-wider uppercase">
                 Phương tiện
               </span>
-              <span className="font-title-md text-title-md text-primary block font-bold">
-                {trip.code}
-              </span>
-              <span className="font-label-sm text-secondary font-medium">{trip.vessel.name}</span>
+              <span className="text-primary block text-sm font-bold">{trip.code}</span>
+              <span className="text-secondary text-[10px] font-medium">{trip.vessel.name}</span>
             </div>
-            <div className="bg-surface-container p-space-sm rounded">
-              <span className="font-label-sm text-outline mb-0.5 block tracking-wider uppercase">
+            <div className="bg-surface-container rounded p-2">
+              <span className="text-outline mb-0.5 block text-[10px] font-semibold tracking-wider uppercase">
                 Vị trí ghế
               </span>
-              <span className="font-title-md text-title-md text-on-tertiary-container block font-bold">
-                {seatIds}
-              </span>
-              <span className="font-label-sm text-outline truncate">{seats.length} ghế</span>
+              <span className="text-on-tertiary-container block text-sm font-bold">{seatIds}</span>
+              <span className="text-outline truncate text-[10px]">{seats.length} ghế</span>
             </div>
           </div>
 
-          <div className="bg-surface p-space-md gap-space-sm flex flex-col justify-between rounded-lg sm:flex-row sm:items-center">
-            <div className="gap-space-sm flex items-center">
-              <div className="bg-secondary/15 text-secondary flex h-10 w-10 items-center justify-center rounded-full">
-                <span className="material-symbols-outlined text-[22px]">group</span>
+          <div className="bg-surface flex flex-col justify-between gap-3 rounded-lg p-3 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-3">
+              <div className="bg-secondary/15 text-secondary flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                <span className="material-symbols-outlined text-[18px]">group</span>
               </div>
               <div>
-                <span className="font-label-sm text-outline block tracking-wider uppercase">
-                  Hành khách đại diện ({seats.length} Vé)
+                <span className="text-outline block text-[10px] font-semibold tracking-wider uppercase">
+                  Hành khách ({seats.length} Vé)
                 </span>
-                <span className="font-body-lg text-body-lg text-primary font-semibold">
+                <span className="text-primary text-sm font-semibold">
                   {contact.fullName}
-                  {seats.length > 1 ? ` + ${seats.length - 1} người đi kèm` : ''}
+                  {seats.length > 1 ? ` + ${seats.length - 1} khách` : ''}
                 </span>
               </div>
             </div>
-            <div className="border-outline/10 sm:pl-space-md text-right sm:border-l">
-              <span className="font-label-sm text-outline block tracking-wider uppercase">
+            <div className="border-outline/10 text-right sm:border-l sm:pl-4">
+              <span className="text-outline block text-[10px] font-semibold tracking-wider uppercase">
                 Thanh toán
               </span>
-              <span className="font-title-md text-title-md text-secondary font-bold">
+              <span className="text-secondary text-sm font-bold">
                 {formatVnd(priceBreakdown.total)}
               </span>
-              <span className="font-label-sm text-secondary inline-flex items-center gap-1 font-medium">
-                <span className="material-symbols-outlined text-[14px]">check_circle</span>{' '}
+              <span className="text-secondary mt-0.5 flex items-center justify-end gap-1 text-[10px] font-medium">
+                <span className="material-symbols-outlined text-[12px]">check_circle</span>{' '}
                 {method?.name}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="bg-surface-container-low p-space-lg relative flex flex-col items-center justify-center rounded-xl text-center lg:col-span-5">
-          <div className="top-space-sm right-space-sm bg-secondary-container/50 text-on-secondary-container px-space-xs font-label-sm absolute flex items-center gap-1 rounded py-0.5 font-semibold tracking-wider uppercase">
-            <span className="bg-secondary h-2 w-2 animate-pulse rounded-full"></span> Hợp lệ
+        <div className="bg-surface-container-low relative flex h-full flex-col items-center justify-center rounded-xl border border-slate-100/50 p-4 text-center lg:col-span-4">
+          <div className="bg-secondary-container/50 text-on-secondary-container absolute top-2 right-2 flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase">
+            <span className="bg-secondary h-1.5 w-1.5 animate-pulse rounded-full"></span> Hợp lệ
           </div>
-          <span className="font-label-sm text-outline mb-space-sm mt-1 font-semibold tracking-widest uppercase">
-            Mã QR Soát Vé Trực Tiếp
+          <span className="text-outline mt-1 mb-2 text-[10px] font-semibold tracking-widest uppercase">
+            Mã QR Soát Vé
           </span>
-          <QrCodeMock payload={bookingCode} />
-          <p className="font-label-sm text-on-surface-variant max-w-[240px] leading-relaxed">
-            Quét trực tiếp tại cổng soát vé thông minh ở bến {origin?.shortName}.{' '}
+          <div className="mb-2 origin-center scale-90">
+            <QrCodeMock payload={bookingCode} />
+          </div>
+          <p className="text-on-surface-variant max-w-[180px] text-xs leading-relaxed">
+            Quét tại bến {origin?.shortName}.{' '}
             <strong className="text-primary font-medium">Không cần in vé giấy.</strong>
           </p>
         </div>
       </div>
 
-      <div className="bg-surface-container-high py-space-xs px-space-lg text-on-surface-variant text-label-sm font-label-sm flex w-full items-center justify-between">
+      <div className="bg-surface-container-high text-on-surface-variant flex w-full items-center justify-between px-4 py-1.5 text-[10px]">
         <span className="">Thời điểm xuất vé: {issuedLabel}</span>
         <span className="">Thao tác bảo lưu: Vé chỉ có hiệu lực cho chuyến tàu đã ghi</span>
       </div>

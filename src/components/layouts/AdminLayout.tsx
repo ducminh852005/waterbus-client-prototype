@@ -10,6 +10,8 @@ import {
   LogOut,
   Menu,
   X,
+  CreditCard,
+  ClipboardList,
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -21,6 +23,16 @@ export default function AdminLayout() {
     { name: 'Routes & Stations', path: '/admin/routes', icon: <Map className="h-5 w-5" /> },
     { name: 'Fleet', path: '/admin/fleet', icon: <Ship className="h-5 w-5" /> },
     { name: 'Schedules', path: '/admin/schedules', icon: <CalendarClock className="h-5 w-5" /> },
+    {
+      name: 'Bookings & Refunds',
+      path: '/admin/bookings',
+      icon: <CreditCard className="h-5 w-5" />,
+    },
+    {
+      name: 'Charter Requests',
+      path: '/admin/charter',
+      icon: <ClipboardList className="h-5 w-5" />,
+    },
     { name: 'Settings', path: '/admin/settings', icon: <Settings className="h-5 w-5" /> },
   ];
 

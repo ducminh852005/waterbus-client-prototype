@@ -31,6 +31,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminRoutes from './pages/AdminRoutes';
 import AdminFleet from './pages/AdminFleet';
 import AdminSchedules from './pages/AdminSchedules';
+import AdminBookings from './pages/AdminBookings';
+import AdminCharter from './pages/AdminCharter';
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,8 @@ export const router = createBrowserRouter([
       { path: 'routes', Component: AdminRoutes },
       { path: 'fleet', Component: AdminFleet },
       { path: 'schedules', Component: AdminSchedules },
+      { path: 'bookings', Component: AdminBookings },
+      { path: 'charter', Component: AdminCharter },
     ],
   },
   {
